@@ -47,7 +47,7 @@ model ProductCategory {
   updatedAt DateTime? @updatedAt
   products  Product[]
 
-  @@map("productCategory")
+  @@map("product_category")
 }
 
 model Product {
@@ -97,7 +97,7 @@ model StockIn {
   supplier        Supplier        @relation(fields: [supplierId], references: [id])
   stockInDetails  StockInDetail[]
 
-  @@map("stockIn")
+  @@map("stock_in")
 }
 
 model StockInDetail {
@@ -105,26 +105,26 @@ model StockInDetail {
   stockInId         Int
   productId         Int
   quantity          Int
-  purchaseUnitPrice Decimal   @db.Decimal(10, 2)
-  saleUnitPrice     Decimal   @db.Decimal(10, 2)
-  totalPrice        Decimal   @db.Decimal(10, 2)
+  purchaseUnitPrice Decimal   @db.Decimal(10, 3)
+  saleUnitPrice     Decimal   @db.Decimal(10, 3)
+  totalPrice        Decimal   @db.Decimal(10, 3)
   expiryDate        DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime? @updatedAt
   stockIn           StockIn   @relation(fields: [stockInId], references: [id])
   product           Product   @relation(fields: [productId], references: [id])
 
-  @@map("stockInDetail")
+  @@map("stock_in_detail")
 }
 
 model SaleItemMaster {
   id                  Int              @id @default(autoincrement())
   transactionCode     String           @db.VarChar(255)
   transactionDate     DateTime
-  totalAmount         Decimal          @db.Decimal(10, 2)
-  totalDiscountAmount Decimal?         @db.Decimal(10, 2)
-  vatAmount           Decimal?         @db.Decimal(10, 2)
-  grandTotalAmount    Decimal          @db.Decimal(10, 2)
+  totalAmount         Decimal          @db.Decimal(10, 3)
+  totalDiscountAmount Decimal?         @db.Decimal(10, 3)
+  vatAmount           Decimal?         @db.Decimal(10, 3)
+  grandTotalAmount    Decimal          @db.Decimal(10, 3)
   paymentMethod       String?          @db.VarChar(50)
   promotionId         Int?
   createdAt           DateTime         @default(now())
@@ -134,7 +134,7 @@ model SaleItemMaster {
   customerId          Int
   customer            Customer         @relation("CustomerSaleItemMaster", fields: [customerId], references: [id])
 
-  @@map("saleItemMaster")
+  @@map("sale_item_master")
 }
 
 model SaleItemDetail {
@@ -142,19 +142,19 @@ model SaleItemDetail {
   transactionId      Int
   productId          Int
   quantity           Int
-  unitPrice          Decimal        @db.Decimal(10, 2)
+  unitPrice          Decimal        @db.Decimal(10, 3)
   discountPercentage Decimal?       @db.Decimal(5, 2)
-  discountAmount     Decimal?       @db.Decimal(10, 2)
+  discountAmount     Decimal?       @db.Decimal(10, 3)
   vatPercentage      Decimal?       @db.Decimal(5, 2)
-  vatAmount          Decimal?       @db.Decimal(10, 2)
-  totalAmount        Decimal        @db.Decimal(10, 2)
-  grandTotalAmount   Decimal        @db.Decimal(10, 2)
+  vatAmount          Decimal?       @db.Decimal(10, 3)
+  totalAmount        Decimal        @db.Decimal(10, 3)
+  grandTotalAmount   Decimal        @db.Decimal(10, 3)
   createdAt          DateTime       @default(now())
   updatedAt          DateTime?      @updatedAt
   transaction        SaleItemMaster @relation(fields: [transactionId], references: [id])
   product            Product        @relation(fields: [productId], references: [id])
 
-  @@map("saleItemDetail")
+  @@map("sale_item_detail")
 }
 
 model Promotion {
