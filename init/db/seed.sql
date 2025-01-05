@@ -14,17 +14,17 @@ INSERT INTO product_category (id, nameEn, nameKh) VALUES
 (2, 'Food', 'អាហារ');
 
 
-INSERT INTO product (id, nameEn, nameKh, categoryId, sku, imageUrl, createdBy, updatedBy) VALUES 
-(1, 'Coca-Cola', 'កូកា-កូឡា', 1, 'BEV-001', NULL, 1, 1),
-(2, 'Pepsi', 'ប៉េបស៊ី', 1, 'BEV-002', NULL, 1, 1),
-(3, 'Orange Juice', 'ទឹកក្រូច', 1, 'BEV-003', NULL, 1, 1),
-(4, 'Water', 'ទឹកស្អាត', 1, 'BEV-004', NULL, 1, 1),
-(5, 'Coffee', 'កាហ្វេ', 1, 'BEV-005', NULL, 1, 1),
-(6, 'Burger', 'ប៊ឺហ្គឺ', 2, 'FOOD-001', NULL, 1, 1),
-(7, 'Pizza', 'ភីហ្សា', 2, 'FOOD-002', NULL, 1, 1),
-(8, 'Pasta', 'ប៉ាស្តា', 2, 'FOOD-003', NULL, 1, 1),
-(9, 'Salad', 'សាឡាត់', 2, 'FOOD-004', NULL, 1, 1),
-(10, 'Fries', 'មីនភីរបាំង', 2, 'FOOD-005', NULL, 1, 1);
+INSERT INTO product (id, productCode, nameEn, nameKh, categoryId, sku, imageUrl, createdBy, updatedBy) VALUES 
+(1, 'P0001' , 'Coca-Cola', 'កូកា-កូឡា', 1, 'BEV-001', NULL, 1, 1),
+(2, 'P0002' , 'Pepsi', 'ប៉េបស៊ី', 1, 'BEV-002', NULL, 1, 1),
+(3, 'P0003' , 'Orange Juice', 'ទឹកក្រូច', 1, 'BEV-003', NULL, 1, 1),
+(4, 'P0004' , 'Water', 'ទឹកស្អាត', 1, 'BEV-004', NULL, 1, 1),
+(5, 'P0005' , 'Coffee', 'កាហ្វេ', 1, 'BEV-005', NULL, 1, 1),
+(6, 'P0006' , 'Burger', 'ប៊ឺហ្គឺ', 2, 'FOOD-001', NULL, 1, 1),
+(7, 'P0007' , 'Pizza', 'ភីហ្សា', 2, 'FOOD-002', NULL, 1, 1),
+(8, 'P0008' , 'Pasta', 'ប៉ាស្តា', 2, 'FOOD-003', NULL, 1, 1),
+(9, 'P0009' , 'Salad', 'សាឡាត់', 2, 'FOOD-004', NULL, 1, 1),
+(10, 'P0010' , 'Fries', 'មីនភីរបាំង', 2, 'FOOD-005', NULL, 1, 1);
 
 
 INSERT INTO supplier (id, supplierName, contactName, contactEmail, contactPhone, addressLine1, addressLine2, province, websiteUrl, imageUrl, taxIdentification) VALUES 

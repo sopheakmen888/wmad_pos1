@@ -52,6 +52,7 @@ model ProductCategory {
 
 model Product {
   id             Int              @id @default(autoincrement())
+  productCode    String           @unique
   nameEn         String           @db.VarChar(255)
   nameKh         String?          @db.VarChar(255)
   categoryId     Int
