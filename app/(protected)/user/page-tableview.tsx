@@ -15,12 +15,12 @@ import { UserModel } from "@/models/api/userModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 
-interface ComponentProps {
+interface Props {
   title: string;
   data: PaginationData<UserModel>;
 }
 
-export const PageTableView: React.FC<ComponentProps> = ({ title, data }) => {
+export const PageTableView: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
 
   const handlePrevClick = () => setPaginatedData((prev) => {
