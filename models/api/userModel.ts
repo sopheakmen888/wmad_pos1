@@ -1,4 +1,6 @@
-export interface UserModel {
+import DataModel from "./model";
+
+export interface UserModel extends DataModel {
   id: number;
   username: string;
   email: string;

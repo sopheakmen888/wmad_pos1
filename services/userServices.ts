@@ -16,11 +16,15 @@ export const getPaginatedUsers = async ({ pageSize = 10, currentPage = 1 }: { pa
     });
 
     const count = await prisma.user.count();
+    const totalPages = Math.ceil(count / pageSize);
 
     const result: PaginationData<UserModel> = {
         pageSize,
         currentPage,
-        totalRecords: count,
+        prevPage: Math.max(currentPage - 1, 1),
+        nextPage: Math.min(currentPage + 1, totalPages),
+        totalItems: count,
+        totalPages: totalPages,
         records: data.map(item => {
             return {
                 id: item.id,

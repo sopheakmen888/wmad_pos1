@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { UserModel } from "@/models/api/userModel";
 import PaginationData from "@/models/PaginationData";
-import React from "react";
+import { TableViewPagination } from "@/components/tableview-pagination";
 
 interface ComponentProps {
   title: string;
@@ -20,6 +21,18 @@ interface ComponentProps {
 }
 
 export const PageTableView: React.FC<ComponentProps> = ({ title, data }) => {
+  const [paginatedData, setPaginatedData] = useState(data);
+
+  const handlePrevClick = () => setPaginatedData((prev) => {
+    return { ...prev, currentPage: data.prevPage };
+  });
+
+  const handleNextClick = () =>
+    setPaginatedData((prev) => {
+      return { ...prev, currentPage: data.nextPage };
+    });
+
+  const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 })
 
   return (
     <div className="space-y-6">
@@ -41,7 +54,7 @@ export const PageTableView: React.FC<ComponentProps> = ({ title, data }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.records.map((item) => (
+            {paginatedData.records.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.username}</TableCell>
                 <TableCell>{item.email}</TableCell>
@@ -54,6 +67,13 @@ export const PageTableView: React.FC<ComponentProps> = ({ title, data }) => {
       </div>
 
       {/* Pagination */}
+      <TableViewPagination
+        onPrevClick={handlePrevClick}
+        onNextClick={handleNextClick}
+        onPageClick={(i) => handlePageClick(i)}
+        path="/user"
+        data={paginatedData}
+      />
     </div>
   );
 }
