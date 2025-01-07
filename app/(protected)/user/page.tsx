@@ -1,20 +1,15 @@
-"use client";
+import React from "react";
+import PageWrapper from "@/components/page-wrapper";
+import { PageTableView } from "./page-tableview";
+import { getPaginatedUsers } from "@/services/userServices";
 
-import React, { useState } from "react";
 
-interface UserModel {
-  id: number;
-  username: string;
-  email: string;
-  imageUrl?: string;
-  isActive: boolean;
-  role: string;
-}
+const UserPage = async () => {
+  const data = await getPaginatedUsers({ pageSize: 10, currentPage: 1 });
 
-const UserPage = () => {
-  const [users, setUsers] = useState<UserModel[]>([]);
-
-  return <div>UserPage</div>;
+  return <PageWrapper>
+    <PageTableView title="Users" data={data} />
+  </PageWrapper>;
 };
 
 export default UserPage;
