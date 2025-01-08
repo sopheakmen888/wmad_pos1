@@ -32,7 +32,7 @@ const homeMenus = [
 const items = [
   {
     title: "Users",
-    url: "#",
+    url: "/user",
     icon: User2,
   },
   {
