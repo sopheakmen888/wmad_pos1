@@ -12,6 +12,8 @@ const protectedRoutes = [
   "/user",
   "/supplier",
   "/supplier/:id"
+  "/",
+  "/promotion"
 ];
 const publicRoutes = ["/login"];
 

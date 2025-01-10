@@ -12,3 +12,4 @@ COPY . .
 
 
 CMD [ "sh", "-c", "npm run db:generate && npm run dev" ]
+
