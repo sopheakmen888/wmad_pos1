@@ -3,6 +3,7 @@ import { decrypt } from "@/app/auth/stateless-session";
 import { cookies } from "next/headers";
 
 const protectedRoutes = [
+  "/customer",
   "/dashboard",
   "/pos",
   "/product",
@@ -10,7 +11,7 @@ const protectedRoutes = [
   "/upload",
   "/user",
   "/supplier",
-  "/supplier/:id"
+  "/supplier/:id",
   "/",
   "/promotion"
 ];
