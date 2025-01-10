@@ -193,7 +193,6 @@ export default function PurchaseOrder() {
                 </Button>
               </div>
             </div>
-
             {/* Items Table */}
             <div className="border rounded-lg bg-white">
               <Table>
