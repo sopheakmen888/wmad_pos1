@@ -5,7 +5,8 @@ import { getPaginatedUsers } from "@/services/userServices";
 
 
 const UserPage = async ({ searchParams }: { searchParams: Record<string, string> }) => {
-  const page = parseInt(searchParams.page || "1");
+  const 
+  page = parseInt(searchParams.page || "1");
   const data = await getPaginatedUsers({ pageSize: 10, currentPage: page });
 
   return <PageWrapper>
