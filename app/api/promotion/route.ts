@@ -62,8 +62,6 @@ export async function POST(request: NextRequest) {
   const start = new Date(startDate)
   const end = new Date(endDate);
 
-  console.log('=======>', start, end);
-
   if (!promotionCode || !description || !startDate || !endDate || !discountPercentage) {
     return NextResponse.json({ message: "Invalid data provided" }, { status: 400 });
   }
@@ -91,7 +89,7 @@ export async function PUT(request: NextRequest) {
   }
   const { promotionCode, description, startDate, endDate, discountPercentage } = await request.json();
   try{
-    const updatepromotion = await updatePromotion(numberId,{
+    const updatepromotion = await updatePromotion(Id,{
         promotionCode,
         description,
         startDate,
