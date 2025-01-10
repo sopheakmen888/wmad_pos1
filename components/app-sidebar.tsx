@@ -50,7 +50,7 @@ const saleManagementMenus = [
   },
   {
     title: "Promotion",
-    url: "#",
+    url: "/promotion",
     icon: BadgePercent,
   },
   {
@@ -73,7 +73,7 @@ const stockManagementMenus = [
   },
   {
     title: "Supplier",
-    url: "#",
+    url: "/supplier",
     icon: PackagePlus,
   },
   {
