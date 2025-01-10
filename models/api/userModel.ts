@@ -8,3 +8,7 @@ export interface UserModel extends DataModel {
   isActive: boolean;
   role: string;
 }
+
+export interface UserApiResModel extends UserModel {
+  roleId: number;
+}
