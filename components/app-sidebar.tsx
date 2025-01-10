@@ -50,7 +50,7 @@ const saleManagementMenus = [
   },
   {
     title: "Promotion",
-    url: "#",
+    url: "/promotion",
     icon: BadgePercent,
   },
   {
