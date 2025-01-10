@@ -42,7 +42,9 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search customers..." />
+        <a href="/customer/create">
         <Button>Add Customer</Button>
+        </a>
       </div>
 
       <div className="rounded-md border">
