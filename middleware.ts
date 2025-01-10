@@ -45,6 +45,7 @@ export default async function middleware(req: NextRequest) {
           JSON.stringify({ error: "Unauthorized: Invalid token" }),
           { status: 401, headers: { "Content-Type": "application/json" } }
         );
+        // req.user = session;
       }
     } catch (error) {
       console.error("Token verification failed:", error);
