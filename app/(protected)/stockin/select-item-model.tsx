@@ -33,25 +33,25 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     });
 
   const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 })
-  const fetchStockApi = async () => {
-    try {
-      const response = await fetch("/stokcin", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  // const fetchStockApi = async () => {
+  //   try {
+  //     const response = await fetch("/stokcin", {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
   
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        console.error("Error: " + response.status);
-      }
-    } catch (error) {
-      console.error("Request failed", error);
-    }
-  };
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log(data);
+  //     } else {
+  //       console.error("Error: " + response.status);
+  //     }
+  //   } catch (error) {
+  //     console.error("Request failed", error);
+  //   }
+  // };
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
