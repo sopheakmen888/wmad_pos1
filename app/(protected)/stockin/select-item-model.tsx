@@ -56,10 +56,15 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
 
+      <div>
+      {/* Search and Add Product Section */}
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Product</Button>
+        <Button >Add Product</Button>
       </div>
+
+  
+    </div>
 
       <div className="rounded-md border">
         <Table>

@@ -8,6 +8,7 @@ const protectedRoutes = [
   "/pos",
   "/product",
   "/stockin",
+  "/stockin/:id",
   "/upload",
   "/user",
   "/supplier",

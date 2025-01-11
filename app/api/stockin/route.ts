@@ -128,3 +128,40 @@ export async function DELETE(request: NextRequest) {
     message: "Purchase deleted successfully",
   });
 }
+// import { NextResponse, NextRequest } from "next/server";
+// import prisma from "@/lib/prisma";
+
+// export async function POST(request: NextRequest) {
+//   const data = await request.json();
+//   const stockIn = await prisma.stockIn.create({ data });
+//   return NextResponse.json(stockIn);
+// }
+
+// export async function GET(request: NextRequest) {
+//   const page = request.nextUrl.searchParams.get("page");
+//   const pageSize = 10; // Fixed value, no flexibility
+
+//   const stockIns = await prisma.stockIn.findMany({
+//     skip: (Number(page) - 1) * pageSize,
+//     take: pageSize,
+//     orderBy: { stockInDate: "desc" },
+//   });
+//   return NextResponse.json(stockIns);
+// }
+
+// export async function PUT(request: NextRequest) {
+//   const body = await request.json();
+//   const updatedstockIn = await prisma.stockIn.update({
+//     where: { id: body.id }, // Assumes `id` exists in the request body
+//     data: body,
+//   });
+//   return NextResponse.json(updatedstockIn);
+// }
+
+// export async function DELETE(request: NextRequest) {
+//   const body = await request.json();
+//   await prisma.stockIn.delete({
+//     where: { id: body.id }, // Assumes `id` exists in the request body
+//   });
+//   return NextResponse.json("Deleted");
+// }
