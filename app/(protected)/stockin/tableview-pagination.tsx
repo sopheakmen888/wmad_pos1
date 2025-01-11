@@ -11,13 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { purchaseModel } from "@/models/api/purchaseModel";
+import { PurchaseModel } from "@/models/api/purchaseModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 
 interface Props {
   title: string;
-  data: PaginationData<purchaseModel>;
+  data: PaginationData<PurchaseModel>;
 }
 
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
@@ -47,21 +47,21 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>referenceNumber</TableHead>
-              <TableHead>stockInDate</TableHead>
-              <TableHead>supplierName</TableHead>
-              <TableHead>numberOfProduct</TableHead>
-              <TableHead>purchaseAmount</TableHead>
+              <TableHead>Username</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.referenceNumber}</TableCell>
-                <TableCell>{item.stockInDate.toLocaleDateString()}</TableCell>
+                <TableCell>{item.stockInDate.toString()}</TableCell>
                 <TableCell>{item.supplierName}</TableCell>
                 <TableCell>{item.numberOfProduct}</TableCell>
                 <TableCell>{item.purchaseAmount}</TableCell>
+
               </TableRow>
             ))}
           </TableBody>
@@ -73,7 +73,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/stockin"
+        path="/user"
         data={paginatedData}
       />
     </div>

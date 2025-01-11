@@ -8,8 +8,8 @@ const protectedRoutes = [
   "/product",
   "/stockin",
   "/upload",
-  "/promotion",
   "/user",
+  "/stockin/add-purchase",
   "/",
 ];
 const publicRoutes = ["/login", "/api/auth/login"];
@@ -47,6 +47,7 @@ export default async function middleware(req: NextRequest) {
             { status: 401, headers: { "Content-Type": "application/json" } }
           );
         }
+
         const token = authHeader.split(" ")[1];
         try {
           const session = await decrypt(token);
@@ -65,19 +66,6 @@ export default async function middleware(req: NextRequest) {
             { status: 401, headers: { "Content-Type": "application/json" } }
           );
         }
-
-    // Optionally: Verify the token in the Authorization header
-    const token = authHeader.split(" ")[1];
-    try {
-      // Assuming decrypt function can handle token decryption or validation
-      const session = await decrypt(token);
-      if (!session || !session.userId) {
-        return new NextResponse(
-          JSON.stringify({ error: "Unauthorized: Invalid token" }),
-          { status: 401, headers: { "Content-Type": "application/json" } }
-        );
-        // req.user = session;
-
       }
     }
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import PageWrapper from "@/components/page-wrapper";
 import { getPurchases } from "@/services/purchaseService";
-import { PageTableView } from "./page-tableview";
+import { PageTableView } from "./tableview-pagination";
 
 
 const PurchasePage = async ({ searchParams }: { searchParams: Record<string, string> }) => {
