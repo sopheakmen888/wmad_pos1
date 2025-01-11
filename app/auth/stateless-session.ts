@@ -43,6 +43,12 @@ export async function createSession(userId: string) {
   redirect("/dashboard");
 }
 
+export async function createSessionAPI(userId: string) {
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+  const session = await encrypt({ userId, expiresAt });
+  return session;
+}
+
 export async function verifySession() {
   const cookie = cookies().get("session")?.value;
   const session = await decrypt(cookie);

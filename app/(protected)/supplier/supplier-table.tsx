@@ -3,21 +3,14 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { PurchaseModel } from "@/models/api/purchaseModel";
+import {Table, TableBody, TableCell, TableHead, TableHeader,TableRow,} from "@/components/ui/table";
+import { SupplierModel } from "@/models/api/supplier";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 
 interface Props {
   title: string;
-  data: PaginationData<PurchaseModel>;
+  data: PaginationData<SupplierModel>;
 }
 
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
@@ -33,61 +26,37 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     });
 
   const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 })
-  const fetchStockApi = async () => {
-    try {
-      const response = await fetch("/stokcin", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        console.error("Error: " + response.status);
-      }
-    } catch (error) {
-      console.error("Request failed", error);
-    }
-  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
 
-      <div>
-      {/* Search and Add Product Section */}
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button >Add Product</Button>
+        <Button>Add Supplier</Button>
       </div>
-
-  
-    </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>SupplierId</TableHead>
-              <TableHead>Reference Number</TableHead>
-              <TableHead>Stock In Date</TableHead>
-              <TableHead>Supplier Name</TableHead>
-              <TableHead>Number Of item</TableHead>
-              <TableHead>Purchase Amount</TableHead>
-
+              <TableHead>SupplierName</TableHead>
+              <TableHead>ContactName</TableHead>
+              <TableHead>ContactEmail</TableHead>
+              <TableHead>ContactPhone</TableHead>
+              <TableHead>Province</TableHead>
+              <TableHead>TaxIdentification</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.supplierId}</TableCell>
-                <TableCell>{item.referenceNumber}</TableCell>
-                <TableCell>{item.stockInDate.toLocaleDateString()}</TableCell>
                 <TableCell>{item.supplierName}</TableCell>
-                <TableCell>{item.numberOfItems}</TableCell>
-                <TableCell>{item.purchaseAmount}</TableCell>
+                <TableCell>{item.contactName}</TableCell>
+                <TableCell>{item.contactEmail}</TableCell>
+                <TableCell>{item.contactPhone}</TableCell>
+                <TableCell>{item.province}</TableCell>
+                <TableCell>{item.taxIdentification}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -99,7 +68,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/stockin"
+        path="/supplier"
         data={paginatedData}
       />
     </div>
