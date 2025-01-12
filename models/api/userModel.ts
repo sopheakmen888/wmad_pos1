@@ -12,3 +12,12 @@ export interface UserModel extends DataModel {
 export interface UserApiResModel extends UserModel {
   roleId: number;
 }
+
+export interface UserApiReqModel {
+  email: string;
+  username: string;
+  password: string;
+  roleId: number;
+  isActive: boolean;
+  imageUrl?: string | null;
+}

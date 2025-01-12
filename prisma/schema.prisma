@@ -160,7 +160,7 @@ model SaleItemDetail {
 
 model Promotion {
   id                 Int              @id @default(autoincrement())
-  promotionCode      String
+  promotionCode      String           @unique
   description        String?
   startDate          DateTime
   endDate            DateTime
