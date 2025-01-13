@@ -43,19 +43,19 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search customers..." />
         <a href="/customer/create">
-        <Button>Add Customer</Button>
+        <Button  className="bg-blue-500 ">Add Customer</Button>
         </a>
       </div>
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-pink-300">
             <TableRow>
-              <TableHead>First Name</TableHead>
-              <TableHead>Last Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Phone</TableHead>
-              <TableHead>Address</TableHead>
+              <TableHead className="text-black">First Name</TableHead>
+              <TableHead className="text-black">Last Name</TableHead>
+              <TableHead className="text-black">Email</TableHead>
+              <TableHead className="text-black">Phone</TableHead>
+              <TableHead className="text-black">Address</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
