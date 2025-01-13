@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -111,7 +112,7 @@ export default function POSPage() {
                 className="p-4 cursor-pointer hover:shadow-lg transition-shadow"
                 onClick={() => addToCart(product)}
               >
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
                   className="w-full h-32 object-cover rounded-md mb-2"
@@ -168,7 +169,7 @@ export default function POSPage() {
           <div className="space-y-4">
             {cart.map((item) => (
               <div key={item.id} className="flex items-center gap-4">
-                <img
+                <Image
                   src={item.image}
                   alt={item.name}
                   className="w-12 h-12 object-cover rounded"

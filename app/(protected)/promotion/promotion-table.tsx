@@ -14,6 +14,7 @@ import {
 import { PromotionModel } from "@/models/api/promotionModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
+import Link from 'next/link';
 
 interface Props {
   title: string;
@@ -40,7 +41,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Promotion</Button>
+        <Button><Link href="/promotion/create">
+        Add Promotion
+      </Link></Button>
       </div>
 
       <div className="rounded-md border">
