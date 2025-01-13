@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-require("dotenv").config();
-const cloudinary = require("cloudinary");
-const path = require("path");
+import * as path from "path";
+import * as cloudinary from "cloudinary";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const filePath = path.resolve(__dirname, "assets", "image1.jpg");
 console.log(filePath);
