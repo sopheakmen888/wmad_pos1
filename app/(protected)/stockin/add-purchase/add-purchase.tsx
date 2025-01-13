@@ -4,13 +4,6 @@
 // import { Search } from "lucide-react";
 // import { Input } from "@/components/ui/input";
 // import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import {
 //   Dialog,
 //   DialogContent,
 //   DialogHeader,
@@ -24,61 +17,35 @@
 //   TableHeader,
 //   TableRow,
 // } from "@/components/ui/table";
-
-// interface Item {
-//   itemCode: string;
-//   itemNameEN: string;
-//   itemNameKH: string;
-//   category: string;
-//   defaultPrice: number;
-// }
-
-// const SAMPLE_ITEMS: Item[] = [
-//   {
-//     itemCode: "B-0002",
-//     itemNameEN: "Botox 50 Units",
-//     itemNameKH: "បូតុក 50 យូនីត",
-//     category: "Botox",
-//     defaultPrice: 15.0,
-//   },
-//   {
-//     itemCode: "L-0007",
-//     itemNameEN: "LASER One Toe nail only 1 time",
-//     itemNameKH: "មជ្ឈមណ្ឌលកែសម្ផស្សភាពស្រស់ស្អាត ១ ដង",
-//     category: "Laser",
-//     defaultPrice: 50.0,
-//   },
-//   // Add more sample items as needed
-// ];
+// import { ProductModel } from "@/models/api/productModel";
 
 // interface ItemSelectModalProps {
 //   open: boolean;
+//   products: ProductModel[];
 //   onOpenChange: (open: boolean) => void;
-//   onItemSelect: (item: Item) => void;
+//   onItemSelect: (item: ProductModel) => void;
 // }
 
-// export function ItemSelectModal({
+// export function AddPurchaseItemDetailModal({
 //   open,
+//   products,
 //   onOpenChange,
 //   onItemSelect,
 // }: ItemSelectModalProps) {
 //   const [searchTerm, setSearchTerm] = useState("");
-//   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  
 
-//   const filteredItems = SAMPLE_ITEMS.filter((item) => {
-//     const matchesSearch =
-//       item.itemCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//       item.itemNameEN.toLowerCase().includes(searchTerm.toLowerCase()) ||
-//       item.itemNameKH.toLowerCase().includes(searchTerm.toLowerCase());
+//   const filteredItems = Array.isArray(products)
+//     ? products.filter((item) => {
+//         const matchesSearch =
+//           item.productCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//           item.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+//           item.categoryNameEn.toLowerCase().includes(searchTerm.toLowerCase());
+//         return matchesSearch;
+//       })
+//     : [];
 
-//     const matchesCategory =
-//       selectedCategory === "all" || item.category === selectedCategory;
-
-//     return matchesSearch && matchesCategory;
-//   });
-
-//   const categories = ["all", "Laser", "Botox"];
+//   console.log(products);
+//   console.log(filteredItems);
 
 //   return (
 //     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -98,21 +65,6 @@
 //                 onChange={(e) => setSearchTerm(e.target.value)}
 //               />
 //             </div>
-//             <Select
-//               value={selectedCategory}
-//               onValueChange={setSelectedCategory}
-//             >
-//               <SelectTrigger>
-//                 <SelectValue placeholder="Select category" />
-//               </SelectTrigger>
-//               <SelectContent>
-//                 {categories.map((category) => (
-//                   <SelectItem key={category} value={category}>
-//                     {category.charAt(0).toUpperCase() + category.slice(1)}
-//                   </SelectItem>
-//                 ))}
-//               </SelectContent>
-//             </Select>
 //           </div>
 
 //           <div className="border rounded-lg overflow-auto max-h-[50vh]">
@@ -129,20 +81,17 @@
 //               <TableBody>
 //                 {filteredItems.map((item) => (
 //                   <TableRow
-//                     key={item.itemCode}
+//                     key={item.productCode}
 //                     className="cursor-pointer hover:bg-muted"
 //                     onClick={() => {
 //                       onItemSelect(item);
 //                       onOpenChange(false);
 //                     }}
 //                   >
-//                     <TableCell>{item.itemCode}</TableCell>
-//                     <TableCell>{item.itemNameEN}</TableCell>
-//                     <TableCell>{item.itemNameKH}</TableCell>
-//                     <TableCell>{item.category}</TableCell>
-//                     <TableCell className="text-right">
-//                       ${item.defaultPrice.toFixed(2)}
-//                     </TableCell>
+//                     <TableCell>{item.productCode}</TableCell>
+//                     <TableCell>{item.nameEn}</TableCell>
+//                     <TableCell>{item.nameKh}</TableCell>
+//                     <TableCell>{item.categoryNameEn}</TableCell>
 //                   </TableRow>
 //                 ))}
 //               </TableBody>
@@ -153,6 +102,10 @@
 //     </Dialog>
 //   );
 // }
+
+
+
+
 "use client";
 
 import { useState } from "react";
@@ -172,13 +125,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ProductRefModel } from "@/app/api/product0/route";
+import { ProductModel } from "@/models/api/productModel";
 
 interface ItemSelectModalProps {
   open: boolean;
-  products: ProductRefModel[];
+  products: ProductModel[];
   onOpenChange: (open: boolean) => void;
-  onItemSelect: (item: ProductRefModel) => void;
+  onItemSelect: (item: ProductModel) => void;
 }
 
 export function AddPurchaseItemDetailModal({
@@ -188,16 +141,18 @@ export function AddPurchaseItemDetailModal({
   onItemSelect,
 }: ItemSelectModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-
+  // Ensure products is an array before filtering
+  
   const filteredItems = products.filter((item) => {
-    const matchesSearch =
-      item.productCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.categoryNameEn.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesSearch;
-  });
-
+        const matchesSearch =
+          item.productCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.nameEn.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.categoryNameEn.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesSearch;
+      })
+    ;
+    console.log(typeof products);
+console.log(products)
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
@@ -230,21 +185,30 @@ export function AddPurchaseItemDetailModal({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredItems.map((item) => (
-                  <TableRow
-                    key={item.productCode}
-                    className="cursor-pointer hover:bg-muted"
-                    onClick={() => {
-                      onItemSelect(item);
-                      onOpenChange(false);
-                    }}
-                  >
-                    <TableCell>{item.productCode}</TableCell>
-                    <TableCell>{item.nameEn}</TableCell>
-                    <TableCell>{item.nameKh}</TableCell>
-                    <TableCell>{item.categoryNameEn}</TableCell>
+                {filteredItems.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center">
+                      No items found
+                    </TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  filteredItems.map((item) => (
+                    <TableRow
+                      key={item.productCode}
+                      className="cursor-pointer hover:bg-muted"
+                      onClick={() => {
+                        onItemSelect(item);
+                        onOpenChange(false);
+                      }}
+                    >
+                      <TableCell>{item.productCode}</TableCell>
+                      <TableCell>{item.nameEn}</TableCell>
+                      <TableCell>{item.nameKh}</TableCell>
+                      <TableCell>{item.categoryNameEn}</TableCell>
+                    
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>

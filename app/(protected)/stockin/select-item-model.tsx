@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,7 +60,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
       {/* Search and Add Product Section */}
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button >Add Product</Button>
+        <Link href="/stockin/add-purchase">
+          <Button>Add Product</Button>
+        </Link>
       </div>
 
   

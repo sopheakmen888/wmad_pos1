@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/popover";
 import { AddPurchaseItemDetailModal } from "./add-purchase";
 import PageWrapper from "@/components/page-wrapper";
-import { ProductRefModel } from "@/app/api/product/route";
+import { ProductModel } from "@/models/api/productModel";
 
 interface PurchaseDetail {
   productId?: number;
@@ -47,7 +47,7 @@ type Supplier = {
 export default function AddPurchasePage() {
   // Ref Data
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [products, setProducts] = useState<ProductRefModel[]>([]);
+  const [products, setProducts] = useState<ProductModel[]>([]);
 
   // Form Master
   const [refDate, setRefDate] = useState<Date>(new Date());
@@ -69,17 +69,17 @@ export default function AddPurchasePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/supplier0", { credentials: "same-origin" })
+    fetch("/api/supplier", { credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => {
         const suppliers = data.data as Supplier[];
         setSuppliers(suppliers);
       });
 
-    fetch("/api/product0", { credentials: "same-origin" })
+    fetch("/api/product", { credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => {
-        const products = data.data as ProductRefModel[];
+        const products = data.data as ProductModel[];
         setProducts(products);
       });
   }, []);
