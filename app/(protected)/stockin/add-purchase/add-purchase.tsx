@@ -200,6 +200,7 @@ console.log(products)
                         onItemSelect(item);
                         onOpenChange(false);
                       }}
+                      
                     >
                       <TableCell>{item.productCode}</TableCell>
                       <TableCell>{item.nameEn}</TableCell>
