@@ -1,3 +1,4 @@
+
 import PageWrapper from '@/components/page-wrapper';
 import { getPaginatedCustomer } from '@/services/customerServices';
 import React from 'react'
