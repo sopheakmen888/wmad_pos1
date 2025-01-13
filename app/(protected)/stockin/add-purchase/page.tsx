@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/popover";
 import { AddPurchaseItemDetailModal } from "./add-purchase-item-detail-modal";
 import PageWrapper from "@/components/page-wrapper";
-import { ProductRefModel } from "@/app/api/product/route"
+import { ProductRefModel } from "@/app/api/product0/route";
 
 interface PurchaseDetail {
   productId?: number;
@@ -69,14 +69,14 @@ export default function AddPurchasePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch("/api/supplier", { credentials: "same-origin" })
+    fetch("/api/supplier0", { credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => {
         const suppliers = data.data as Supplier[];
         setSuppliers(suppliers);
       });
 
-    fetch("/api/product", { credentials: "same-origin" })
+    fetch("/api/product0", { credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => {
         const products = data.data as ProductRefModel[];
