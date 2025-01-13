@@ -45,7 +45,7 @@ const items = [
 const saleManagementMenus = [
   {
     title: "Customer",
-    url: "#",
+    url: "/customer",
     icon: Users,
   },
   {
