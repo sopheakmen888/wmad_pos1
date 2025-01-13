@@ -72,6 +72,14 @@ export async function POST(request: NextRequest) {
 //Get Product
 
 export async function GET(request: NextRequest) {
-  const data = await prisma.product.findMany();
-  return NextResponse.json({ data });
+  try {
+    const data = await prisma.product.findMany();
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch products" },
+      { status: 500 }
+    );
+  }
 }
