@@ -1,4 +1,3 @@
-
 import prisma from "@/lib/prisma";
 import { UserApiResModel } from "@/models/api/userModel";
 import { getPaginatedUsers } from "@/services/userServices";
@@ -75,4 +74,3 @@ export async function POST(req: Request) {
 
 //   return NextResponse.json({ message: "success", data: [] });
 // }
-
