@@ -10,7 +10,7 @@
     "db:generate": "npx prisma generate",
     "db:push": "npx prisma db push",
     "db:pull": "npx prisma db pull",
-    "db:seed": "npx tsc init/db/init.ts"
+    "db:seed": "npx tsc init/db/init.ts && node init/db/init.js"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.2",
