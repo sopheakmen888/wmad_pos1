@@ -47,21 +47,21 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Username</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>referenceNumber</TableHead>
+              <TableHead>stockInDate</TableHead>
+              <TableHead>supplierName</TableHead>
+              <TableHead>numberOfProduct</TableHead>
+              <TableHead>purchaseAmount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.referenceNumber}</TableCell>
-                <TableCell>{item.stockInDate.toString()}</TableCell>
+                <TableCell>{item.stockInDate.toLocaleDateString()}</TableCell>
                 <TableCell>{item.supplierName}</TableCell>
                 <TableCell>{item.numberOfProduct}</TableCell>
                 <TableCell>{item.purchaseAmount}</TableCell>
-
               </TableRow>
             ))}
           </TableBody>
@@ -73,7 +73,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/user"
+        path="/stockin"
         data={paginatedData}
       />
     </div>
