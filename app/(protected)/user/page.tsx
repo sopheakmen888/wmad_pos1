@@ -15,3 +15,4 @@ const UserPage = async ({ searchParams }: { searchParams: Record<string, string>
 };
 
 export default UserPage;
+
