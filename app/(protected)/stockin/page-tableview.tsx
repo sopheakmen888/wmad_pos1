@@ -11,13 +11,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserModel } from "@/models/api/userModel";
+import { PurchaseModel } from "@/models/api/purchaseModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 
 interface Props {
   title: string;
-  data: PaginationData<UserModel>;
+  data: PaginationData<PurchaseModel>;
 }
 
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
@@ -47,19 +47,21 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Username</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>referenceNumber</TableHead>
+              <TableHead>stockInDate</TableHead>
+              <TableHead>supplierName</TableHead>
+              <TableHead>numberOfProduct</TableHead>
+              <TableHead>purchaseAmount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.username}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell>{item.isActive ? "Active" : "Inactive"}</TableCell>
+                <TableCell>{item.referenceNumber}</TableCell>
+                <TableCell>{item.stockInDate.toLocaleDateString()}</TableCell>
+                <TableCell>{item.supplierName}</TableCell>
+                <TableCell>{item.numberOfProduct}</TableCell>
+                <TableCell>{item.purchaseAmount}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -71,7 +73,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/user"
+        path="/stockin"
         data={paginatedData}
       />
     </div>
