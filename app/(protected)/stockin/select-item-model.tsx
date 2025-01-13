@@ -95,7 +95,6 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
           </TableBody>
         </Table>
       </div>
-
       {/* Pagination */}
       <TableViewPagination
         onPrevClick={handlePrevClick}
