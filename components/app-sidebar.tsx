@@ -45,12 +45,12 @@ const items = [
 const saleManagementMenus = [
   {
     title: "Customer",
-    url: "#",
+    url: "/customer",
     icon: Users,
   },
   {
     title: "Promotion",
-    url: "#",
+    url: "/promotion",
     icon: BadgePercent,
   },
   {

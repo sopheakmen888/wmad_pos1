@@ -39,7 +39,6 @@ export async function POST(request: NextRequest) {
       );
       const nextProductCodeNumber = lastProductCodeNumber + 1;
 
-      // Format the new product code to match the pattern, with 4 digits
       newProductCode = `P${nextProductCodeNumber.toString().padStart(4, "0")}`;
     }
 
