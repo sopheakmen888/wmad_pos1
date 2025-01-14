@@ -1,6 +1,19 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
+export interface ProductRefModel {
+  id: number;
+  nameEn: string;
+  nameKh: string;
+  categoryNameEn: string;
+  categoryNameKh: string;
+  productCode: string;
+}
+
+interface Supplier{
+  id:number;
+  name:string;
+}
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
