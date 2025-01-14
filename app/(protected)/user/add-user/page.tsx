@@ -8,6 +8,7 @@ interface Role {
   id: number;
   name: string;
 }
+
 const AddUserPage = () => {
   const { toast } = useToast();
   const router = useRouter();
