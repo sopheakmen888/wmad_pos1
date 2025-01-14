@@ -6,7 +6,7 @@ export interface ProductModel extends DataModel {
   nameKh: string;
   categoryNameEn: string;
   categoryNameKh: string;
+  sku: string;
   imageUrl:string,
-  productCode: string;
     
 }

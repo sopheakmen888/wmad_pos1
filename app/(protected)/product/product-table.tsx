@@ -71,7 +71,7 @@ export const ProductTableView: React.FC<Props> = ({
                 <TableCell>{item.nameKh}</TableCell>
                 <TableCell>{item.categoryNameEn}</TableCell>
                 <TableCell>{item.categoryNameKh}</TableCell>
-                <TableCell>{item.productCode}</TableCell>
+                {/* <TableCell>{item.productCode}</TableCell> */}
                 <TableCell>
                   <img
                     src={item.imageUrl || "/placeholder.png"}

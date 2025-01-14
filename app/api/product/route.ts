@@ -21,49 +21,34 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     const data = await req.json();
 
-//     // Validate the incoming data
-//     if (!data.nameEn || !data.nameKh || !data.categoryId || !data.imageUrl || !data.productCode) {
-//       return NextResponse.json(
-//         { message: "Invalid input data" },
-//         { status: 400 }
-//       );
-//     }
+export async function POST(req: Request) {
+  try {
+    const data = await req.json();
 
-//     // Create a new product in the database
-//     const newProduct = await prisma.product.create({
-//       data: {
-//         nameEn: data.nameEn,
-//         nameKh: data.nameKh,
-//         categoryId: data.categoryId,
-//         imageUrl: data.imageUrl,
-//         productCode: data.productCode,
-//       },
-//       include: {
-//         category: true, // Fetch related category data
-//       },
-//     });
+    const product = await prisma.product.create({
+      data,
+      include: { category: true},
+    });
 
-//     // Construct the response object
-//     const resData: ProductModel = {
-//       id: newProduct.id,
-//       nameEn: newProduct.nameEn,
-//       nameKh: newProduct.nameKh??"",
-//       categoryNameEn: newProduct.category?.nameEn || "Unknown",
-//       categoryNameKh: newProduct.category?.nameKh || "Unknown",
-//       imageUrl: newProduct.imageUrl || "",
-//       productCode: newProduct.productCode,
-//     };
+    const resData: ProductModel = {
+      id:product.id,
+      nameEn: product.nameEn,
+      nameKh: product.nameKh || '',
+      category: product.category.nameEn,
+      sku: product.sku || '',
+      imageUrl: product.imageUrl || '',
+    };
 
-//     return NextResponse.json({ message: "Success", data: resData });
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json(
-//       { message: "Something went wrong" },
-//       { status: 500 }
-//     );
-//   }
-// }
+
+
+    return NextResponse.json({ message: "Create product successfully", data:resData });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { message: "Something went wrong", data: [] },
+      { status: 500 }
+    )
+  }
+}
+
