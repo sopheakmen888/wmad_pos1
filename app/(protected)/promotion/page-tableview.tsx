@@ -14,6 +14,7 @@ import {
 import { PromotionModel } from "@/models/api/promotionModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
+import Link from 'next/link'
 
 interface Props {
   title: string;
@@ -51,7 +52,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
       </div>
 
       <div className="rounded-md border">
+      {/* <Link href={'/promotion/info'}> */}
         <Table>
+
           <TableHeader>
             <TableRow>
               <TableHead>Promotion Code</TableHead>
@@ -61,20 +64,30 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
               <TableHead>Discount Percentage</TableHead>
             </TableRow>
           </TableHeader>
+     
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow key={item.promotionCode}>
-                <TableCell>{item.promotionCode}</TableCell>
-                <TableCell>{item.description}</TableCell>
-                <TableCell>{new Date(item.startDate).toLocaleDateString()}</TableCell>
-                <TableCell>{new Date(item.endDate).toLocaleDateString()}</TableCell>
-                <TableCell>
-                {item.discountPercentage !== undefined && item.discountPercentage !== null ? `${Number(item.discountPercentage).toFixed(2)}%`  : 'N/A'}
-                </TableCell>       
-               </TableRow>
+          <TableRow key={item.promotionCode}>
+          <TableCell>
+            <Link href={'/promotion/info'} className="text-blue-500 hover:underline">
+              {item.promotionCode}
+            </Link>
+          </TableCell>
+          <TableCell>{item.description}</TableCell>
+          <TableCell>{new Date(item.startDate).toLocaleDateString()}</TableCell>
+          <TableCell>{new Date(item.endDate).toLocaleDateString()}</TableCell>
+          <TableCell>
+            {item.discountPercentage !== undefined && item.discountPercentage !== null
+              ? `${Number(item.discountPercentage).toFixed(2)}%`
+              : 'N/A'}
+          </TableCell>
+        </TableRow>
+        
             ))}
           </TableBody>
         </Table>
+        {/* </Link> */}
+
       </div>
 
       <TableViewPagination
