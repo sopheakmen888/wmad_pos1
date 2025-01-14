@@ -13,14 +13,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -31,12 +31,15 @@ import {
 import { AddPurchaseItemDetailModal } from "./add-purchase";
 import PageWrapper from "@/components/page-wrapper";
 import { ProductModel } from "@/models/api/productModel";
+import { SupplierModel } from "@/models/api/supplier";
 
 interface PurchaseDetail {
   productId?: number;
   qty?: number;
   purchaseUnitPrice?: number;
   saleUnitPrice?: number;
+  totalAmount?: number;
+  expiryDate?: Date;
 }
 
 type Supplier = {
@@ -46,8 +49,9 @@ type Supplier = {
 
 export default function AddPurchasePage() {
   // Ref Data
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [suppliers, setSuppliers] = useState<SupplierModel[]>([]);
   const [products, setProducts] = useState<ProductModel[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null); 
 
   // Form Master
   const [refDate, setRefDate] = useState<Date>(new Date());
@@ -56,14 +60,13 @@ export default function AddPurchasePage() {
   const [note, setNote] = useState<string>("");
 
   // Form Detail
-  const [productId, setProductId] = useState<string>("1");
   const [qty, setQty] = useState<number>(1);
   const [purchaseUnitPrice, setPurchaseUnitPrice] = useState<number>(1);
   const [saleUnitPrice, setSaleUnitPrice] = useState<number>(1);
   const [expiryDate, setExpiryDate] = useState<Date>(new Date());
 
   // Detail
-  const [purchaseDetail, setPurchaseDetail] = useState<PurchaseDetail[]>();
+  const [purchaseDetail, setPurchaseDetail] = useState<PurchaseDetail[]>([]);
 
   // Add Purchase Item Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,7 +75,7 @@ export default function AddPurchasePage() {
     fetch("/api/supplier", { credentials: "same-origin" })
       .then((res) => res.json())
       .then((data) => {
-        const suppliers = data.data as Supplier[];
+        const suppliers = data.data as SupplierModel[];
         setSuppliers(suppliers);
       });
 
@@ -84,21 +87,40 @@ export default function AddPurchasePage() {
       });
   }, []);
 
-  const handleSaveMaster = async () => {
-    // Log Master
-    console.log("refNum", refNum);
-    console.log("refDate", refDate);
-    console.log("supplierId", supplierId);
-    console.log("note", note);
+  const handleAddPurchaseDetail = () => {
+    if (!selectedProduct || qty <= 0 || purchaseUnitPrice <= 0 || saleUnitPrice <= 0) {
+      alert("Please fill all fields properly.");
+      return;
+    }
+
+    const newDetail: PurchaseDetail = {
+      productId: selectedProduct.id,
+      qty,
+      purchaseUnitPrice,
+      saleUnitPrice,
+      totalAmount: qty * purchaseUnitPrice,
+      expiryDate,
+    };
+
+    setPurchaseDetail((prev) => [...prev, newDetail]);
+
+    // Reset fields after adding the detail
+    setSelectedProduct(null);
+    setQty(1);
+    setPurchaseUnitPrice(0);
+    setSaleUnitPrice(0);
+    setExpiryDate(new Date());
   };
 
-  const handleAddDetail = async () => {
-    // Log Detail
-    console.log("productId", productId);
-    console.log("qty", qty);
-    console.log("purchaseUnitPrice", purchaseUnitPrice);
-    console.log("saleUnitPrice", saleUnitPrice);
-    console.log("expiryDate", expiryDate);
+  const totalQty = purchaseDetail.reduce((sum, item) => sum + (item.qty || 0), 0);
+  const totalAmount = purchaseDetail.reduce(
+    (sum, item) => sum + (item.totalAmount || 0),
+    0
+  );
+
+  const handleSaveMaster = () => {
+    console.log("Master Data", { refNum, refDate, supplierId, note, purchaseDetail,qty,totalAmount,expiryDate,purchaseUnitPrice});
+    alert("Master data saved!");
   };
 
   return (
@@ -142,7 +164,7 @@ export default function AddPurchasePage() {
                   <SelectContent>
                     {suppliers.map((item) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.name}
+                        {item.supplierName}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -181,7 +203,7 @@ export default function AddPurchasePage() {
                   onClick={() => setIsModalOpen(true)}
                 >
                   <Search className="mr-2 h-4 w-4" />
-                  Search and select item...
+                  {selectedProduct ? selectedProduct.nameEn : 'Search and select item...'}
                 </Button>
               </div>
               <div className="col-span-1 space-y-2">
@@ -226,9 +248,7 @@ export default function AddPurchasePage() {
                       className="w-full justify-start text-left font-normal"
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {expiryDate
-                        ? format(expiryDate, "dd/MMM/yyyy")
-                        : "Select date"}
+                      {expiryDate ? format(expiryDate, "dd/MMM/yyyy") : "Select date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0">
@@ -243,7 +263,7 @@ export default function AddPurchasePage() {
               </div>
 
               <div className="col-span-2 flex gap-2">
-                <Button className="flex-1" onClick={handleAddDetail}>
+                <Button className="flex-1" onClick={handleAddPurchaseDetail}>
                   <Plus className="w-4 h-4 mr-1" />
                   Add
                 </Button>
@@ -251,10 +271,11 @@ export default function AddPurchasePage() {
                   <X className="w-4 h-4" />
                 </Button>
               </div>
+              
             </div>
 
             {/* Items Table */}
-            {/* <div className="border rounded-lg bg-white">
+            <div className="border rounded-lg bg-white">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -267,23 +288,19 @@ export default function AddPurchasePage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {items.map((item) => (
-                    <TableRow key={item.itemCode}>
-                      <TableCell>{item.itemCode}</TableCell>
-                      <TableCell>{item.itemNameEN}</TableCell>
-                      <TableCell>{item.itemNameKH}</TableCell>
+                  {purchaseDetail.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{products.find((product) => product.id === item.productId)?.productCode}</TableCell>
+                      <TableCell>{products.find((product) => product.id === item.productId)?.nameEn}</TableCell>
+                      <TableCell>{products.find((product) => product.id === item.productId)?.nameKh}</TableCell>
                       <TableCell className="text-right">{item.qty}</TableCell>
-                      <TableCell className="text-right">
-                        ${item.purchasePrice.toFixed(2)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        ${item.totalAmount.toFixed(2)}
-                      </TableCell>
+                      <TableCell className="text-right">{item.purchaseUnitPrice?.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">{item.totalAmount?.toFixed(2)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </div> */}
+            </div>
 
             {/* Footer Section */}
             <div className="flex items-center justify-between">
@@ -297,7 +314,7 @@ export default function AddPurchasePage() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Label>Total Qty:</Label>
-                  {/* <Input className="w-20" value={totalQty} readOnly /> */}
+                  <Input className="w-20" value={totalQty} readOnly />
                 </div>
                 <div className="flex items-center gap-2">
                   <Label>Discount:</Label>
@@ -305,11 +322,11 @@ export default function AddPurchasePage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Label>Total Amt:</Label>
-                  {/* <Input
+                  <Input
                     className="w-32"
                     value={`$${totalAmount.toFixed(2)}`}
                     readOnly
-                  /> */}
+                  />
                 </div>
               </div>
             </div>
@@ -320,7 +337,10 @@ export default function AddPurchasePage() {
           products={products}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
-          onItemSelect={(item) => setProductId(item.id.toString())}
+          onItemSelect={(item) =>{ 
+            setSelectedProduct(item);
+            setIsModalOpen(false)
+          }}
         />
       </Card>
     </PageWrapper>

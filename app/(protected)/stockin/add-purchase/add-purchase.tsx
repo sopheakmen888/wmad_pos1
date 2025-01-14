@@ -151,8 +151,7 @@ export function AddPurchaseItemDetailModal({
         return matchesSearch;
       })
     ;
-    console.log(typeof products);
-console.log(products)
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[80vh] flex flex-col">
