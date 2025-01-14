@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { UserApiResModel } from "@/models/api/userModel";
 import { getPaginatedUsers } from "@/services/userServices";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,9 +28,17 @@ export async function GET(req: NextRequest) {
 export async function POST(req: Request) {
   try {
     const data = await req.json();
+    const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const user = await prisma.user.create({
-      data,
+      data: {
+        email: data.email,
+        username: data.username,
+        password: hashedPassword,
+        roleId: data.roleId,
+        isActive: data.isActive,
+        imageUrl: data.imageUrl,
+      },
       include: { role: true },
     });
 

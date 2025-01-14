@@ -11,6 +11,7 @@ const protectedRoutes = [
   "/stockin/:id",
   "/upload",
   "/user",
+  "/user/add-user",
   "/supplier",
   "/supplier/:id",
   "/",
