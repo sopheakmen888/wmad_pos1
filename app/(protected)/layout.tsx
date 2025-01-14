@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import { decrypt } from "../auth/stateless-session";
 import AppWrapper from "@/components/app-wrapper";
 
+
 const Layout = async ({
   children,
 }: Readonly<{

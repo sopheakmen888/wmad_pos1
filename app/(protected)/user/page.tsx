@@ -13,5 +13,4 @@ const UserPage = async ({ searchParams }: { searchParams: Record<string, string>
     <PageTableView title="Users" data={data} />
   </PageWrapper>;
 };
-
 export default UserPage;
