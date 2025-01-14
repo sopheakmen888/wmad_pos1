@@ -77,6 +77,7 @@ const AddProduct = () => {
             </div>
         </PageWrapper>
     );
-};
+}
+
 
 export default AddProduct;
