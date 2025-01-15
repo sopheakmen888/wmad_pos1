@@ -15,6 +15,7 @@ import { UserModel } from "@/models/api/userModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   title: string;
@@ -44,7 +45,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search..." />
-        <Button onClick={() => router.push("/user/add-user")}>Add User</Button>
+        <Button asChild>
+          <Link href="/user/add-user">Add User</Link>
+        </Button>
       </div>
 
       <div className="rounded-md border">
@@ -59,7 +62,11 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow key={item.id}>
+              <TableRow
+                className="cursor-pointer"
+                key={item.id}
+                onClick={() => router.push(`/user/user-info/${item.id}`)}
+              >
                 <TableCell>{item.username}</TableCell>
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.role}</TableCell>
