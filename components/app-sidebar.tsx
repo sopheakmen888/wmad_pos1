@@ -73,11 +73,7 @@ const stockManagementMenus = [
   },
   {
     title: "Supplier",
-<<<<<<< HEAD
-    url: "supplier",
-=======
     url: "/supplier",
->>>>>>> supplier
     icon: PackagePlus,
   },
   {
