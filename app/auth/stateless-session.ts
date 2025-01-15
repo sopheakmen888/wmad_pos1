@@ -60,6 +60,17 @@ export async function verifySession() {
   return { isAuth: true, userId: Number(session.userId) };
 }
 
+export async function getSessionDataFromCookie() {
+  const cookie = cookies().get("session")?.value;
+  const session = await decrypt(cookie);
+
+  if (!session?.userId) {
+    return null;
+  }
+
+  return { isAuth: true, userId: Number(session.userId) };
+}
+
 export async function updateSession() {
   const session = cookies().get("session")?.value;
   const payload = await decrypt(session);

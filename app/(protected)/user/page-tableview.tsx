@@ -81,6 +81,5 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     </div>
   );
 
-}
-;
+};
 
