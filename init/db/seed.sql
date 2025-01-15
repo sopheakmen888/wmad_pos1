@@ -161,3 +161,9 @@ INSERT INTO sale_item_master (id, transactionCode, transactionDate, totalAmount,
 
 INSERT INTO sale_item_detail (id, transactionId, productId, quantity, unitPrice, discountPercentage, discountAmount, vatPercentage, vatAmount, totalAmount, grandTotalAmount) VALUES 
 (18, 10, 9, 1, 0.7, 5.00, 0.035, 10.00, 0.07, 0.7, 0.665); 
+
+INSERT INTO promotion (promotionCode, description, startDate, endDate, discount)
+VALUES 
+('SUMMER20', '20% off for summer sale', '2025-06-01', '2025-06-30', 20.00),
+('WELCOME10', '10% off for new customers', '2025-01-01', '2025-12-31', 10.00),
+('BLACKFRIDAY50', '50% off on Black Friday', '2025-11-25', '2025-11-25', 50.00);
