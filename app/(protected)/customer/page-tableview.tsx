@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
@@ -22,6 +23,7 @@ interface Props {
 
 export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
+  const router =useRouter();
 
   const handlePrevClick = () =>
     setPaginatedData((prev) => {
@@ -43,7 +45,7 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search customers..." />
         <a href="/customer/create">
-        <Button  className="bg-blue-500 ">Add Customer</Button>
+          <Button className="bg-blue-500 ">Add Customer</Button>
         </a>
       </div>
 
@@ -60,7 +62,17 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow key={item.id}>
+              <TableRow 
+              key={item.id}
+              onClick={() => router.push(`/customer/info?id=${item.id}`)}
+              style={{ cursor: "pointer" }}
+              role="link"
+              onMouseOver={(e) =>
+                (e.currentTarget.style.textDecoration = "underline")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.textDecoration = "none")
+              }>
                 <TableCell>{item.firstName}</TableCell>
                 <TableCell>{item.lastName}</TableCell>
                 <TableCell>{item.email}</TableCell>
