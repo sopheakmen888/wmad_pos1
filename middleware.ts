@@ -6,6 +6,7 @@ const protectedRoutes = [
   "/dashboard",
   "/pos",
   "/product",
+  "/product/create",
   "/stockin",
   "/upload",
   "/user",
