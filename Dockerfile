@@ -1,4 +1,3 @@
-
 FROM node:20
 
 WORKDIR /usr/src/app
@@ -6,10 +5,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --force
+RUN npm install -force
 
 COPY . .
 
-CMD [ "sh","-c","npm run db:generate && npm run dev"]
 
-
+CMD [ "npm", "run", "dev" ]
