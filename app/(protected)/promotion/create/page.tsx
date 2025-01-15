@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { PromotionForm } from './promotion-form'
 import PageWrapper from "@/components/page-wrapper";
 

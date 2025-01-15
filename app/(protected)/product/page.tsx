@@ -2,7 +2,6 @@ import React from "react";
 import PageWrapper from "@/components/page-wrapper";
 import { getPaginatedProducts } from "@/services/productServices";
 import { ProductTableView } from "./product-table"; // Adjust import as needed
-import { ProductModel } from "@/models/api/productModel";
 
 
 const ProductPage = async ({ searchParams }: { searchParams: Record<string, string> }) => {
