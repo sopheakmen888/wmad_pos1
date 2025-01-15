@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,10 +56,17 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
 
+      <div>
+      {/* Search and Add Product Section */}
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Product</Button>
+        <Link href="/stockin/add-purchase">
+          <Button>Add Product</Button>
+        </Link>
       </div>
+
+  
+    </div>
 
       <div className="rounded-md border">
         <Table>
@@ -88,7 +95,6 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
           </TableBody>
         </Table>
       </div>
-
       {/* Pagination */}
       <TableViewPagination
         onPrevClick={handlePrevClick}

@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import { decrypt } from "../auth/stateless-session";
 import AppWrapper from "@/components/app-wrapper";
 
+
 const Layout = async ({
   children,
 }: Readonly<{
@@ -14,6 +15,7 @@ const Layout = async ({
 }>) => {
   const defaultOpen = cookies().get("sidebar:state")?.value === "true";
   const cookie = cookies().get("session")?.value;
+  console.log('===>', cookie)
   const session = await decrypt(cookie);
   const { userId } = session as { userId: number };
 
