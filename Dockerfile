@@ -1,16 +1,15 @@
-FROM node:18-alpine AS builder
 
-WORKDIR /app
+FROM node:20
+
+WORKDIR /usr/src/app
+
+
 COPY package*.json ./
-COPY tsconfig*.json ./
-RUN npm install
 
-COPY /prisma ./
-RUN npm run db:generate
+RUN npm install --force
 
 COPY . .
-RUN npm run build
 
-EXPOSE 3000
+CMD [ "sh","-c","npm run db:generate && npm run dev"]
 
-CMD ["npm", "start"]
+
