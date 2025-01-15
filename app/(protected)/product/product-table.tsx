@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -42,7 +43,9 @@ export const ProductTable: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Product</Button>
+        <a href="/product/create">
+          <Button>Add Product</Button>
+        </a>
       </div>
 
       <div className="rounded-md border">
