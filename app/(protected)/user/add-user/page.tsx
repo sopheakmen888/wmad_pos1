@@ -47,8 +47,10 @@ const AddUserPage = () => {
     event.preventDefault();
     setIsLoading(true);
 
-    if (!validate()) return;
-
+    if (!validate()) {
+      setIsLoading(false);
+      return;
+    }
     let imageUrl: string | null = "";
     if (imageFile) {
       const formData = new FormData();
