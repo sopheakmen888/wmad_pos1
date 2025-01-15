@@ -1,3 +1,4 @@
+import { getSessionDataFromCookie } from "@/app/auth/stateless-session";
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
@@ -17,12 +18,23 @@ interface Supplier{
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { nameEn, nameKh, categoryId, sku, createdBy, updatedBy } = body;
+    const { nameEn, nameKh, categoryId, sku } = body;
+
+    console.log("nameEn", nameEn);
+    console.log("nameKh", nameKh);
+    console.log("categoryId", categoryId);
+    console.log("sku", sku);
 
     // validate form data from client
     // logic to save to database
 
-    if (!nameEn || !nameKh || !categoryId || !sku || !createdBy || !updatedBy) {
+    const authData = await getSessionDataFromCookie();
+    // console.log("Cookie", authData);
+
+    if (!authData) {
+      return NextResponse.json("Unauthorized", { status: 401 });
+    }
+    if (!nameEn || !nameKh || !categoryId || !sku) {
       return NextResponse.json(
         { success: false, message: "All fields are required" },
         { status: 400 }
@@ -46,7 +58,6 @@ export async function POST(request: NextRequest) {
     let newProductCode = "P0001"; // Default product code if no products exist
 
     if (lastProduct) {
-      // Extract the number part from the last product code (e.g., 'p0009' -> 9)
       const lastProductCodeNumber = parseInt(
         lastProduct.productCode.replace("P", "")
       );
@@ -62,15 +73,15 @@ export async function POST(request: NextRequest) {
         nameKh,
         categoryId: categoryId,
         sku,
-        createdBy,
-        updatedBy,
+        createdBy: authData?.userId,
+        updatedBy: authData?.userId,
       },
     });
 
     return NextResponse.json({
       success: true,
       message: "Product created successfully",
-      NewProduct,
+     NewProduct
     });
   } catch (error) {
     console.error("Error handling request:", error);

@@ -25,6 +25,7 @@ export const getPaginatedPromotion = async ({ pageSize = 10, currentPage = 1 }: 
         totalPages: totalPages,
         records: data.map(item => {
             return {
+                id: item.id,
                 promotionCode:item.promotionCode,
                 description:item.description,
                 startDate:item.startDate,
