@@ -48,7 +48,7 @@ const Createpage = () => {
         setMessage("User added successfully");
         toast({
           title: "Success",
-          description: "New user added.",
+          description: "New customer",
         });
         router.back();
       } else {
@@ -61,10 +61,10 @@ const Createpage = () => {
       }
     } catch (error) {
       console.error("Error user creation:", error);
-      setMessage("User creation failed");
+      setMessage("Customer creation failed");
       toast({
         title: "Falied",
-        description: `User Creation.`,
+        description: `Customer Creation.`,
       });
     } finally {
       setIsLoading(false);
