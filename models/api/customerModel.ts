@@ -5,7 +5,7 @@ export interface customerModel extends DataModel{
     firstName: string;
     lastName: string;
     email: string;
-    phone: string;
+    phone: number;
     address: string;
 
 }
