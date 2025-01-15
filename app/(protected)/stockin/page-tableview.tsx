@@ -14,6 +14,8 @@ import {
 import { PurchaseModel } from "@/models/api/purchaseModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
+import { useRouter } from "next/navigation";
+
 
 interface Props {
   title: string;
@@ -22,6 +24,7 @@ interface Props {
 
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
+  const router = useRouter();
 
   const handlePrevClick = () => setPaginatedData((prev) => {
     return { ...prev, currentPage: data.prevPage };
@@ -40,7 +43,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Product</Button>
+        <Button onClick={() => router.push("/stockin/add-purchase")}>Add Product</Button>
       </div>
 
       <div className="rounded-md border">
