@@ -1,6 +1,19 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
+export interface ProductRefModel {
+  id: number;
+  nameEn: string;
+  nameKh: string;
+  categoryNameEn: string;
+  categoryNameKh: string;
+  productCode: string;
+}
+
+interface Supplier{
+  id:number;
+  name:string;
+}
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -39,7 +52,6 @@ export async function POST(request: NextRequest) {
       );
       const nextProductCodeNumber = lastProductCodeNumber + 1;
 
-      // Format the new product code to match the pattern, with 4 digits
       newProductCode = `P${nextProductCodeNumber.toString().padStart(4, "0")}`;
     }
 
@@ -72,6 +84,14 @@ export async function POST(request: NextRequest) {
 //Get Product
 
 export async function GET(request: NextRequest) {
-  const data = await prisma.product.findMany();
-  return NextResponse.json({ data });
+  try {
+    const data = await prisma.product.findMany();
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch products" },
+      { status: 500 }
+    );
+  }
 }

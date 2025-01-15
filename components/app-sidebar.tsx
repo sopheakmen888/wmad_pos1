@@ -45,7 +45,7 @@ const items = [
 const saleManagementMenus = [
   {
     title: "Customer",
-    url: "#",
+    url: "/customer",
     icon: Users,
   },
   {
@@ -73,7 +73,7 @@ const stockManagementMenus = [
   },
   {
     title: "Supplier",
-    url: "#",
+    url: "/supplier",
     icon: PackagePlus,
   },
   {
