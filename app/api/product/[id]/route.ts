@@ -30,60 +30,60 @@ export async function GET(request: NextRequest) {
 }
 
 
-export async function PUT(request: NextRequest) {
-  const body = await request.json();
+// export async function PUT(request: NextRequest) {
+//   const body = await request.json();
 
-  const { id, nameEn, nameKh, category, sku, image } = body;
+//   const { id, nameEn, nameKh, category, sku, image } = body;
 
-  if (!id || !nameEn || !category || !sku) {
-    return NextResponse.json({
-      success: false,
-      error: "Missing required fields: 'id', 'nameEn', 'category', 'sku'",
-    });
-  }
+//   if (!id || !nameEn || !category || !sku) {
+//     return NextResponse.json({
+//       success: false,
+//       error: "Missing required fields: 'id', 'nameEn', 'category', 'sku'",
+//     });
+//   }
 
-  // Check if the product exists
-  if (!productDatabase[id]) {
-    return NextResponse.json({
-      success: false,
-      error: "Product not found",
-    });
-  }
+//   // Check if the product exists
+//   if (!productDatabase[id]) {
+//     return NextResponse.json({
+//       success: false,
+//       error: "Product not found",
+//     });
+//   }
 
-  // Update the product in the database
-  productDatabase[id] = { id, nameEn, nameKh, category, sku, image };
+//   // Update the product in the database
+//   productDatabase[id] = { id, nameEn, nameKh, category, sku, image };
 
-  return NextResponse.json({
-    success: true,
-    message: "Product updated successfully",
-    product: productDatabase[id],
-  });
-}
+//   return NextResponse.json({
+//     success: true,
+//     message: "Product updated successfully",
+//     product: productDatabase[id],
+//   });
+// }
 
 
-// DELETE: Remove a product by ID
-export async function DELETE(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("id");
+// // DELETE: Remove a product by ID
+// export async function DELETE(request: NextRequest) {
+//   const id = request.nextUrl.searchParams.get("id");
 
-  if (!id) {
-    return NextResponse.json({
-      success: false,
-      error: "Missing 'id' query parameter",
-    });
-  }
+//   if (!id) {
+//     return NextResponse.json({
+//       success: false,
+//       error: "Missing 'id' query parameter",
+//     });
+//   }
 
-  if (!productDatabase[id]) {
-    return NextResponse.json({
-      success: false,
-      error: "Product not found",
-    });
-  }
+//   if (!productDatabase[id]) {
+//     return NextResponse.json({
+//       success: false,
+//       error: "Product not found",
+//     });
+//   }
 
-  // Remove the product from the database
-  delete productDatabase[id];
+//   // Remove the product from the database
+//   delete productDatabase[id];
 
-  return NextResponse.json({
-    success: true,
-    message: "Product deleted successfully",
-  });
-}
+//   return NextResponse.json({
+//     success: true,
+//     message: "Product deleted successfully",
+//   });
+// }
