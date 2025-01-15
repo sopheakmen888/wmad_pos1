@@ -5,7 +5,7 @@ import { CalendarIcon, Search, Plus, X, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from 'next/navigation';
+import { useRouter,useParams } from 'next/navigation';
 // import { redirect } from "next/navigation";
 
 import {
@@ -31,7 +31,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { AddPurchaseItemDetailModal } from "./add-purchase";
+import { AddPurchaseItemDetailModal } from "./detail";
 import PageWrapper from "@/components/page-wrapper";
 import { ProductModel } from "@/models/api/productModel";
 import { SupplierModel } from "@/models/api/supplier";
@@ -53,6 +53,8 @@ type Supplier = {
 
 export default function AddPurchasePage() {
   const router = useRouter();
+  const params = useParams();
+  const purchaseId = params?.id; 
 
   // Ref Data
   const [suppliers, setSuppliers] = useState<SupplierModel[]>([]);
@@ -95,6 +97,33 @@ export default function AddPurchasePage() {
   }, []);
   console.log(suppliers)
 
+  // Fetch existing purchase data by ID
+  useEffect(() => {
+    if (purchaseId) {
+      fetch(`/api/stockin/${purchaseId}`, { credentials: "same-origin" })
+        .then((res) => res.json())
+        .then((data) => {
+          const purchase = data.data;
+
+          // Populate state with fetched data
+          setRefDate(new Date(purchase.stockInDate));
+          setRefNum(purchase.referenceNumber);
+          setSupplierId(purchase.supplierId.toString());
+          setPurchaseDetail(
+            purchase.stockInDetails.map((detail: any) => ({
+              productId: detail.productId,
+              qty: detail.quantity,
+              purchaseUnitPrice: detail.purchaseUnitPrice,
+              saleUnitPrice: detail.saleUnitPrice,
+              totalAmount: detail.totalPrice,
+              expiryDate: new Date(detail.expiryDate),
+            }))
+          );
+        })
+        .catch((error) => console.error("Error fetching purchase data:", error));
+    }
+  }, [purchaseId]);
+
   const handleAddPurchaseDetail = () => {
     if (!selectedProduct || qty <= 0 || purchaseUnitPrice <= 0 || saleUnitPrice <= 0) {
       alert("Please fill all fields properly.");
@@ -125,7 +154,6 @@ export default function AddPurchasePage() {
     (sum, item) => sum + (item.totalAmount || 0),
     0
   );
- 
   const handleSaveMaster = () => {
     // Validate required fields
     if (!refNum.trim()) {
@@ -160,9 +188,9 @@ export default function AddPurchasePage() {
   
     console.log(purchaseData);
   
-    // Send data to the API
+    // Send data to the API using PUT
     fetch("/api/stockin", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -171,7 +199,7 @@ export default function AddPurchasePage() {
       .then(async (response) => {
         if (response.ok) {
           const result = await response.json();
-          alert("Purchase creation successful!");
+          alert("Purchase update successful!");
           setPurchaseDetail([]);
           setRefNum("");
           setNote("");
@@ -184,8 +212,8 @@ export default function AddPurchasePage() {
         }
       })
       .catch((error) => {
-        console.error("Error in purchase creation:", error);
-        alert("Purchase creation failed");
+        console.error("Error in purchase update:", error);
+        alert("Purchase update failed");
       });
   };
   
@@ -238,7 +266,7 @@ export default function AddPurchasePage() {
                 </Select>
               </div>
             </div>
-
+  
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label>Invoice Reference</Label>
@@ -259,7 +287,7 @@ export default function AddPurchasePage() {
                 />
               </div>
             </div>
-
+  
             {/* Item Selection Section */}
             <div className="grid grid-cols-12 gap-4 items-end">
               <div className="col-span-4 space-y-2">
@@ -305,7 +333,7 @@ export default function AddPurchasePage() {
                   step={0.01}
                 />
               </div>
-
+  
               <div className="col-span-2 space-y-2">
                 <Label>Expiry Date</Label>
                 <Popover>
@@ -328,7 +356,7 @@ export default function AddPurchasePage() {
                   </PopoverContent>
                 </Popover>
               </div>
-
+  
               <div className="col-span-2 flex gap-2">
                 <Button className="flex-1" onClick={handleAddPurchaseDetail}>
                   <Plus className="w-4 h-4 mr-1" />
@@ -340,7 +368,7 @@ export default function AddPurchasePage() {
               </div>
               
             </div>
-
+  
             {/* Items Table */}
             <div className="border rounded-lg bg-white">
               <Table>
@@ -368,7 +396,7 @@ export default function AddPurchasePage() {
                 </TableBody>
               </Table>
             </div>
-
+  
             {/* Footer Section */}
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
@@ -399,12 +427,12 @@ export default function AddPurchasePage() {
             </div>
           </div>
         </CardContent>
-
+  
         <AddPurchaseItemDetailModal
           products={products}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
-          onItemSelect={(item) =>{ 
+          onItemSelect={(item) => { 
             setSelectedProduct(item);
             setIsModalOpen(false)
           }}
@@ -412,4 +440,5 @@ export default function AddPurchasePage() {
       </Card>
     </PageWrapper>
   );
+  
 }
