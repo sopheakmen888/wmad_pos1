@@ -41,7 +41,9 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search Customer..." />
+        <a href="customer/create">
         <Button className="bg-blue-600 font-bold">Add Customer</Button>
+        </a>
       </div>
 
       <div className="rounded-md border">
@@ -75,7 +77,7 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/user"
+        path="/customer"
         data={paginatedData}
       />
     </div>
