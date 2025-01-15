@@ -16,6 +16,7 @@ const Layout = async ({
   const cookie = cookies().get("session")?.value;
   const session = await decrypt(cookie);
   const { userId } = session as { userId: number };
+  console.log("....",cookie)
 
   return (
     <AppWrapper appInfo={{ userId: userId, token: cookie }}>
