@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 
 const protectedRoutes = [
   "/customer",
+  "/customer/create",
+  "/customer/info",
   "/dashboard",
   "/pos",
   "/product",
@@ -14,6 +16,7 @@ const protectedRoutes = [
   "/supplier/:id",
   "/",
   "/promotion"
+
 ];
 const publicRoutes = ["/login", "/api/auth/login"];
 
