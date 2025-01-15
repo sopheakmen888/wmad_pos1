@@ -48,4 +48,8 @@ export const getPaginatedSupplier = async ({ pageSize = 10, currentPage = 1 }: {
     };
 
     return result;
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> supplier

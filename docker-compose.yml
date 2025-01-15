@@ -1,0 +1,22 @@
+version: "3"
+services:
+  app1:
+    build: .
+    env_file: .env
+    ports:
+      - "3001:3000"
+    restart: always
+
+  app2:
+    build: .
+    env_file: .env
+    ports:
+      - "3002:3000"
+    restart: always
+
+  app3:
+    build: .
+    env_file: .env
+    ports:
+      - "3003:3000"
+    restart: always

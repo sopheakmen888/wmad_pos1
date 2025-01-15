@@ -11,6 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SupplierModel } from "@/models/api/supplierModel";
+<<<<<<< HEAD
+=======
+
+>>>>>>> supplier
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 
