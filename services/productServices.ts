@@ -29,10 +29,9 @@ export const getPaginatedProducts= async ({ pageSize = 10, currentPage = 1 }: { 
                 id: item.id,
                 nameEn: item.nameEn,
                 nameKh: item.nameKh??"",
-                categoryNameEn: item.category.nameEn, // Assuming category has nameEn
-                categoryNameKh: item.category.nameKh??"", // Assuming category has nameKh
-                imageUrl: item.imageUrl??"",
-                productCode: item.productCode,}
+                category: item.category, // Assuming category has nameEn
+                sku: item.sku,
+                imageUrl: item.imageUrl??"",}
         }),
     }
     console.log(".......",getPaginatedProducts)

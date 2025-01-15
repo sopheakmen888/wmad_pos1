@@ -1,12 +1,11 @@
 import DataModel from "./model";
 
 export interface ProductModel extends DataModel {
-    id: number;
-  nameEn:string;
+  id: number;
+  nameEn: string;
   nameKh: string;
-  categoryNameEn: string;
-  categoryNameKh: string;
-  imageUrl:string,
-  productCode: string;
-    
+  category: string;
+  sku: string;
+  imageUrl: string;
 }
+
