@@ -13,6 +13,8 @@ import {
 import { SupplierModel } from "@/models/api/supplierModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
+import { useRouter } from "next/navigation";
+
 
 interface SupplierTableProps {
   title: string;
@@ -23,6 +25,8 @@ export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const router = useRouter();
+
 
   const handlePrevClick = () =>
     setLoading(true);
@@ -48,7 +52,8 @@ export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => 
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <Button>Add Supplier</Button>
+         <Button onClick={() => router.push("/supplier/add-supplier")}>Add Supplier</Button>
+
       </div>
 
       {loading && <p>Loading...</p>}
