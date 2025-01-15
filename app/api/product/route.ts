@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
+
 // // POST Handler: Add a new product
 // export async function POST(request: NextRequest) {
 //   const body = await request.json();
