@@ -1,14 +1,20 @@
+"use client";
 
-"use client"
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { PromotionModel } from "@/models/api/promotionModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
-import Link from 'next/link';
-import axios from "axios";
 
 interface Props {
   title: string;
@@ -17,61 +23,22 @@ interface Props {
 
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchFilteredData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`/api/promotions`, {
-          params: { query: searchQuery, page: paginatedData.currentPage },
-        });
-        setPaginatedData(response.data);
-      } catch (error) {
-        console.error("Error fetching filtered promotions", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (searchQuery) {
-      fetchFilteredData();
-    } else {
-      setPaginatedData(data);
-    }
-  }, [searchQuery, paginatedData.currentPage]);
-
+  const router = useRouter();
   const handlePrevClick = () => {
-    if (paginatedData.prevPage) {
-      setPaginatedData((prev) => {
-        return { ...prev, currentPage: paginatedData.prevPage };
-      });
+    if (paginatedData.prevPage && paginatedData.prevPage >= 1) {
+      setPaginatedData((prev) => ({ ...prev, currentPage: paginatedData.prevPage }));
     }
   };
 
   const handleNextClick = () => {
-    if (paginatedData.nextPage) {
-      setPaginatedData((prev) => {
-        return { ...prev, currentPage: paginatedData.nextPage };
-      });
+    if (paginatedData.nextPage && paginatedData.nextPage <= paginatedData.totalPages) {
+      setPaginatedData((prev) => ({ ...prev, currentPage: paginatedData.nextPage }));
     }
   };
 
-  const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 });
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleAddPromotion = async () => {
-    try {
-      const response = await axios.get(`/api/promotions`, {
-        params: { query: searchQuery, page: 1 },
-      });
-      setPaginatedData(response.data);
-    } catch (error) {
-      console.error("Error fetching promotions after adding a new one", error);
+  const handlePageClick = (i: number) => {
+    if (i + 1 >= 1 && i + 1 <= paginatedData.totalPages) {
+      setPaginatedData((prev) => ({ ...prev, currentPage: i + 1 }));
     }
   };
 
@@ -80,59 +47,53 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
       <h1 className="text-3xl font-bold">{title}</h1>
 
       <div className="flex justify-between items-center">
-        <Input
-          className="max-w-sm"
-          placeholder="Search promotions..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-        <Link href="/promotion/create" passHref>
-          <Button onClick={handleAddPromotion}>Add Promotion</Button>
-        </Link>
+        <Input className="max-w-sm" placeholder="Search promotions..." />
+        <a href="/promotion/create"> <Button >Add Promotion</Button></a>
+      
+        
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>PromotionCode</TableHead>
+              <TableHead>Promotion Code</TableHead>
               <TableHead>Description</TableHead>
-              <TableHead>StartDate</TableHead>
-              <TableHead>EndDate</TableHead>
-              <TableHead>DiscountPercentage</TableHead>
+              <TableHead>Start Date</TableHead>
+              <TableHead>End Date</TableHead>
+              <TableHead>Discount Percentage</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center">Loading...</TableCell>
+            {paginatedData.records.map((item) => (
+              <TableRow key={item.id}
+              onClick={() => router.push(`/promotion/info?id=${item.id}`)}
+              style={{ cursor: "pointer" }}
+              role="link"
+              onMouseOver={(e) =>
+                (e.currentTarget.style.textDecoration = "underline")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.textDecoration = "none")
+              }>
+                <TableCell>{item.promotionCode}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell>{new Date(item.startDate).toLocaleDateString()}</TableCell>
+                <TableCell>{new Date(item.endDate).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  {item.discountPercentage !== undefined && item.discountPercentage !== null
+                    ? `${Number(item.discountPercentage).toFixed(2)}%`
+                    : 'N/A'}
+                </TableCell>
               </TableRow>
-            ) : (
-              paginatedData.records.map((item) => (
-              
-                <TableRow key={item.promotionCode}>
-                  <Link href={("/promotion/info")}>
-                  <TableCell>{item.promotionCode}</TableCell>
-                  </Link>
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell>{new Date(item.startDate).toLocaleDateString()}</TableCell>
-                  <TableCell>{new Date(item.endDate).toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    {item.discountPercentage !== undefined && item.discountPercentage !== null
-                      ? `${Number(item.discountPercentage).toFixed(2)}%`
-                      : "N/A"}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
-
       <TableViewPagination
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
-        onPageClick={(i) => handlePageClick(i)}
+        onPageClick={handlePageClick}
         path="/promotion"
         data={paginatedData}
       />
