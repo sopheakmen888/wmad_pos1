@@ -7,7 +7,7 @@ const PromotionIfo = () => {
     <div>
       <PageWrapper>
     <PromotionIfoForm title="PromotionIfo"/>
-  </PageWrapper>;
+  </PageWrapper>
     </div>
   )
 }
