@@ -55,6 +55,7 @@ export async function PUT(
 
   try {
     const updatedPromotion = await updatePromotion(id, {
+      id,
       promotionCode,
       description,
       startDate,
