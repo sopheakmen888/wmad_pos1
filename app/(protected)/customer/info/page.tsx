@@ -125,7 +125,6 @@ const UpdateCustomer: React.FC = () => {
 
   const handleDelete = async () => {
     if (!id || !token) return;
-
     const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
     
     if (confirmDelete) {
