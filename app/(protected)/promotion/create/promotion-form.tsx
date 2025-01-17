@@ -110,10 +110,10 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
       <div className="space-y-6 p-5">
         <h1 className="text-3xl font-bold">{title}</h1>
         {message && <p>{message}</p>}
-        <div className="rounded-md border flex justify-center p-5">
-          <div className="rounded-md p-5 bg-slate-200 w-full">
+        <div className="rounded-md border-2 shadow-sm flex justify-center p-5 h-[660px]">
+          <div className="rounded-md p-5 w-full">
             <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-">
                 <div className="flex flex-col">
                   <label htmlFor="promotioncode" className="mb-2 text-sm font-medium text-gray-700">
                     Promotion Code
@@ -214,7 +214,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                 <Button className="bg-blue-500" type="submit" disabled={isLoading}>
                   {isLoading ? "Saving..." : "Save"}
                 </Button>
-                <Button type="button" variant="outline" onClick={() => router.back()} className="bg-red-500 text-white">Cancel</Button>
+                <Button type="button" variant="outline" onClick={() => router.back()} className="bg-green-500 text-white  hover:bg-green-600 hover:text-white">Cancel</Button>
               </div>
             </form>
           </div>
