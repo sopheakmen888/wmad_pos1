@@ -23,7 +23,7 @@ interface Props {
 
 export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
-  const router =useRouter();
+  const router = useRouter();
 
   const handlePrevClick = () =>
     setPaginatedData((prev) => {
@@ -62,17 +62,17 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow 
-              key={item.id}
-              onClick={() => router.push(`/customer/info?id=${item.id}`)}
-              style={{ cursor: "pointer" }}
-              role="link"
-              onMouseOver={(e) =>
-                (e.currentTarget.style.textDecoration = "underline")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.textDecoration = "none")
-              }>
+              <TableRow
+                key={item.id}
+                onClick={() => router.push(`/customer/info?id=${item.id}`)}
+                style={{ cursor: "pointer" }}
+                role="link"
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }>
                 <TableCell>{item.firstName}</TableCell>
                 <TableCell>{item.lastName}</TableCell>
                 <TableCell>{item.email}</TableCell>

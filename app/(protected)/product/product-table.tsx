@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -11,76 +10,76 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { ProductModel } from "@/models/api/productModel";
+import PaginationData from "@/models/PaginationData";
+import { TableViewPagination } from "@/components/tableview-pagination";
 
-const data = Array.from({ length: 25 }, (_, i) => ({
-  id: i + 1,
-  productName: `Product ${i + 1}`,
-  category: i % 2 === 0 ? "Electronics" : "Clothing",
-  actualPrice: `$${(20 + i * 5).toFixed(2)}`,
-  stock: i % 3 === 0 ? 0 : 50 + i * 3,
-  imageUrl: `https://via.placeholder.com/150?text=Product+${i + 1}`,
-  supplier: i % 2 === 0 ? "Supplier A" : "Supplier B",
-}));
+interface Props {
+  title: string;
+  data: PaginationData<ProductModel>;
+}
 
-export default function ProductTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+export const ProductTableView: React.FC<Props> = ({
+  title,
+  data,
 
-  const currentData = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+}) => {
+  const [paginatedData, setPaginatedData] = useState(data);
+
+  const handlePrevClick = () => setPaginatedData((prev) => {
+    return { ...prev, currentPage: data.prevPage };
+  });
+
+  const handleNextClick = () =>
+    setPaginatedData((prev) => {
+      return { ...prev, currentPage: data.nextPage };
+    });
+
+  const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 })
+ 
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Product List</h1>
+      <h1 className="text-3xl font-bold">{title}</h1>
 
+      {/* Search and Add Product Section */}
       <div className="flex justify-between items-center">
-        <Input className="max-w-sm" placeholder="Search products..." />
+        <div className="flex space-x-2">
+         
+        </div>
         <Button>Add Product</Button>
       </div>
 
+      {/* Product Table */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Supplier</TableHead>
+              <TableHead>Name (EN)</TableHead>
+              <TableHead>Name (KH)</TableHead>
+              <TableHead>Category (EN)</TableHead>
+              <TableHead>Category (KH)</TableHead>
+
+              <TableHead>SKU</TableHead>
               <TableHead>Image</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentData.map((item) => (
+            {data?.records?.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.productName}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.actualPrice}</TableCell>
+                <TableCell>{item.nameEn}</TableCell>
+                <TableCell>{item.nameKh}</TableCell>
+                <TableCell>{item.categoryNameEn}</TableCell>
+                <TableCell>{item.categoryNameKh}</TableCell>
+                <TableCell>{item.productCode}</TableCell>
                 <TableCell>
-                  {item.stock > 0 ? `${item.stock} units` : "Out of Stock"}
-                </TableCell>
-                <TableCell>{item.supplier}</TableCell>
-                <TableCell>
-                  {/* <Image
-                    src={item.imageUrl}
-                    alt={item.productName}
+                  <img
+                    src={item.imageUrl || "/placeholder.png"}
+                    alt={item.nameEn}
                     width={64}
                     height={64}
                     className="object-cover rounded-md"
-                  /> */}
+                  />
                 </TableCell>
               </TableRow>
             ))}
@@ -88,35 +87,14 @@ export default function ProductTable() {
         </Table>
       </div>
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            />
-          </PaginationItem>
-          {[...Array(totalPages)].map((_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink
-                href="#"
-                onClick={() => setCurrentPage(i + 1)}
-                isActive={currentPage === i + 1}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+         {/* Pagination */}
+         <TableViewPagination
+        onPrevClick={handlePrevClick}
+        onNextClick={handleNextClick}
+        onPageClick={(i) => handlePageClick(i)}
+        path="/stockin"
+        data={paginatedData}
+      />
     </div>
   );
-}
+};
