@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
 
 
 interface Props {
@@ -17,7 +18,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [discountPercentage, setDiscountPersentage] = useState("");
+  const [discountPercentage, setDiscountPersentage] = useState(0);
   const [imageFile, setImageFile] = useState<File | undefined>();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [message, setMessage] = useState("");
@@ -30,9 +31,21 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
     const newErrors: Record<string, string> = {};
     if (!promotionCode) newErrors.promotionCode = "Promotion code is required!";
     if (!description) newErrors.description = "Description is required!";
-    if (!startDate) newErrors.startDate = "Start date is required!";
-    if (!endDate) newErrors.endDate = "End date is required!";
-    if (!discountPercentage) newErrors.discountPercentage = "Discount percentage must be greater than 0!";
+    if (!startDate) {
+      newErrors.startDate = "Start date is required!";
+    } else if (new Date(startDate) > new Date(endDate)) {
+      newErrors.startDate = "Start date cannot be after the end date!";
+    }
+    if (!endDate) {
+      newErrors.endDate = "End date is required!";
+    } else if (new Date(startDate) > new Date(endDate)) {
+      newErrors.endDate = "End date cannot be before the start date!";
+    }
+    if (!discountPercentage || discountPercentage <= 0) {
+      newErrors.discountPercentage = "Discount percentage must be greater than 0!";
+    } else if (discountPercentage > 100) {
+      newErrors.discountPercentage = "Discount percentage cannot be more than 100%!";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -119,7 +132,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                     Promotion Code
                   </label>
                   <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     type="text"
                     name="promotionCode"
                     id="promotioncode"
@@ -135,9 +148,8 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
 
                 <div className="flex flex-col">
                   <label htmlFor="description" className="mb-2 text-sm font-medium text-gray-700">Description</label>
-                  <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
-                    type="text"
+                  <Textarea
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     name="description"
                     id="description"
                     value={description}
@@ -152,7 +164,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                 <div className="flex flex-col">
                   <label htmlFor="startdate" className="mb-2 text-sm font-medium text-gray-700">Start date</label>
                   <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     type="date"
                     name="startDate"
                     id="startdate"
@@ -168,7 +180,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                 <div className="flex flex-col">
                   <label htmlFor="enddate" className="mb-2 text-sm font-medium text-gray-700">End date</label>
                   <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     type="date"
                     name="endDate"
                     id="enddate"
@@ -184,13 +196,14 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                 <div className="flex flex-col">
                   <label htmlFor="discountpercentage" className="mb-2 text-sm font-medium text-gray-700">Discount percentage</label>
                   <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     type="number"
                     name="discountPercentage"
                     id="discountPercentage"
                     value={discountPercentage}
                     onChange={(e) => {
-                      setDiscountPersentage(e.target.value);
+                      const value = Number(e.target.value);
+                      setDiscountPersentage(value);
                       setErrors((prevErrors) => ({ ...prevErrors, discountPercentage: "" }))
                     }}
                     placeholder="Discount percentage"
@@ -200,7 +213,7 @@ export const PromotionForm: React.FC<Props> = ({ title }) => {
                 <div className="flex flex-col">
                   <label htmlFor="imageurl" className="mb-2 text-sm font-medium text-gray-700">Upload image</label>
                   <input
-                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                    className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                     type="file"
                     name="imageurl"
                     id="imageurl"
