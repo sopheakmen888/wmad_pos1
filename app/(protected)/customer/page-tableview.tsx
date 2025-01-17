@@ -51,7 +51,7 @@ export const CustomerPageTableView: React.FC<Props> = ({ title, data }) => {
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader className="bg-pink-300">
+          <TableHeader className="bg-gray-100">
             <TableRow>
               <TableHead className="text-black">First Name</TableHead>
               <TableHead className="text-black">Last Name</TableHead>

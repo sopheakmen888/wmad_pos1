@@ -147,14 +147,14 @@ const UpdateCustomer: React.FC = () => {
   if (!getCustomer) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-lg text-gray-600">Loading customer data...</p>
+        <p className="text-lg text-gray-00">Loading customer data...</p>
       </div>
     );
   }
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-pink-100 p-8 rounded-lg shadow-lg w-full max-w-xl">
+      <form onSubmit={handleSubmit} className="bg- p-8 rounded-lg shadow-lg w-full max-w-xl">
         <h1 className="text-3xl font-semibold mb-8 text-center text-gray-800">Update Customer</h1>
 
         {["firstName", "lastName", "email", "phone", "address"].map((field) => (
@@ -170,7 +170,7 @@ const UpdateCustomer: React.FC = () => {
               onChange={handleChange}
               placeholder={`Enter your ${field}`}
               className={`mt-2 block w-full px-4 py-3 rounded-md border ${
-                errors[field as keyof Errors] ? "border-red-500" : "border-gray-300"
+                errors[field as keyof Errors] ? "border-black" : "border-gray-300"
               } shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50`}
             />
             {errors[field as keyof Errors] && (
@@ -181,16 +181,17 @@ const UpdateCustomer: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-pink-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="w-full py-3 px-6 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           disabled={loading}
         >
+
           {loading ? "Updating..." : "Update"}
         </button>
 
         <button
           type="button"
           onClick={handleDelete}
-          className="w-full py-3 px-6 bg-red-400 text-white font-semibold rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-4"
+          className="w-full py-3 px-6 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-4"
         >
           Delete Customer
         </button>

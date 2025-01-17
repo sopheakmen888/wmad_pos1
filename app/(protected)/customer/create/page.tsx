@@ -19,7 +19,7 @@ interface Errors {
   address?: string;
 }
 
-const AddCustomer: React.FC = () => {
+const AddCustomer: React.FC = () => { //state variable
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -59,9 +59,9 @@ const AddCustomer: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
+    if (Object.keys(validationErrors).length > 0) { //extract property name key yg
       setErrors(validationErrors);
-      return;
+      return; //vear stop handle submit 
     }
 
     // const token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiIxIiwiZXhwaXJlc0F0IjoiMjAyNS0wMS0xM1QwMzo0NDoyNS44OTdaIiwiaWF0IjoxNzM2NzM2MjY1LCJleHAiOjE3MzY3Mzk4NjV9.tQJFVJ6RZIG_Xg5qsZJSqBKtQNb-SAFfrPNA-PS6h1Y"; // Assuming token is stored in localStorage
@@ -71,7 +71,7 @@ const AddCustomer: React.FC = () => {
       return;
     }
 
-    setLoading(true);
+    setLoading(true); //jg send form data tvbackend api
     try {
       const response = await axios.post(
         "http://localhost:3000/api/customer",
@@ -100,13 +100,13 @@ const AddCustomer: React.FC = () => {
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-pink-100 p-8 rounded-lg shadow-lg w-full max-w-xl"
+        className="bg-gray-100 p-8 rounded-lg shadow-lg w-full max-w-xl"
       >
         <h1 className="text-3xl font-semibold mb-8 text-center text-gray-800">
           Add New Customer
         </h1>
 
-        {["firstName", "lastName", "email", "phone", "address"].map((field) => (
+        {["firstName", "lastName", "email", "phone", "address"].map((field) => ( //dynamic 
           <div key={field} className="mb-6">
             <label
               htmlFor={field}
@@ -137,7 +137,7 @@ const AddCustomer: React.FC = () => {
 
         <button
           type="submit"
-          className="w-full py-3 px-6 bg-pink-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          className="w-full py-3 px-6 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           disabled={loading}
         >
           {loading ? "Submitting..." : "Submit"}
