@@ -156,7 +156,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
           title: "Success",
           description: "Promotion has been deleted.",
         });
-        router.replace("/promotion");
+        router.back();
       } else {
         const errorData = await response.json();
         setMessage(`Error: ${errorData.message}`);
@@ -181,16 +181,16 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
     <div className="space-y-6 p-5">
       <h1 className="text-3xl font-bold">{title}</h1>
       {message && <p>{message}</p>}
-      <div className="rounded-md border flex justify-center p-5">
+      <div className="rounded-md border-2 shadow-sm flex justify-center p-5 h-[660px]">
         <div className="rounded-md p-5 w-full">
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-1">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
               <div className="flex flex-col">
                 <label htmlFor="promotioncode" className="mb-2 text-sm font-medium text-gray-700">
                   Promotion Code
                 </label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="text"
                   name="promotionCode"
                   id="promotioncode"
@@ -207,7 +207,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <div className="flex flex-col">
                 <label htmlFor="description" className="mb-2 text-sm font-medium text-gray-700">Description</label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="text"
                   name="description"
                   id="description"
@@ -223,7 +223,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <div className="flex flex-col">
                 <label htmlFor="startdate" className="mb-2 text-sm font-medium text-gray-700">Start date</label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="text"
                   name="startDate"
                   id="startdate"
@@ -239,7 +239,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <div className="flex flex-col">
                 <label htmlFor="enddate" className="mb-2 text-sm font-medium text-gray-700">End date</label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="text"
                   name="endDate"
                   id="enddate"
@@ -255,7 +255,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <div className="flex flex-col">
                 <label htmlFor="discountpercentage" className="mb-2 text-sm font-medium text-gray-700">Discount percentage</label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="number"
                   name="discountPercentage"
                   id="discountPercentage"
@@ -271,7 +271,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <div className="flex flex-col">
                 <label htmlFor="imageurl" className="mb-2 text-sm font-medium text-gray-700">Upload image</label>
                 <input
-                  className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm"
+                  className="border rounded-lg p-2 focus:outline-none placeholder-gray-400 shadow-sm"
                   type="file"
                   name="imageurl"
                   id="imageurl"
@@ -285,7 +285,7 @@ export const PromotionIfoForm: React.FC<Props> = ({ title}) => {
               <Button className="bg-blue-500" type="submit" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save"}
               </Button>
-              <Button type="button" variant="outline" onClick={() => router.back()} className="bg-red-500 text-white">Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => router.back()} className="bg-green-500 text-white hover:bg-green-600 hover:text-white">Cancel</Button>
               <Button type="button" variant="destructive" onClick={handleDelete} className="bg-red-500 text-white">Delete</Button>
             </div>
           </form>
