@@ -11,10 +11,6 @@ export interface ProductRefModel {
   productCode: string;
 }
 
-interface Supplier{
-  id:number;
-  name:string;
-}
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
