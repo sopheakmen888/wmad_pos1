@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -11,21 +12,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserModel } from "@/models/api/userModel";
+// import { UserModel } from "@/models/api/userModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { CustomerModel } from "@/models/api/customer";
 
 interface Props {
   title: string;
-  data: PaginationData<UserModel>;
+  data: PaginationData<CustomerModel>;
 }
 
-export const PageTableView: React.FC<Props> = ({ title, data }) => {
+export const CustomerTable: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
   const router = useRouter();
-
   const handlePrevClick = () =>
     setPaginatedData((prev) => {
       return { ...prev, currentPage: data.prevPage };
@@ -44,20 +43,21 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
       <h1 className="text-3xl font-bold">{title}</h1>
 
       <div className="flex justify-between items-center">
-        <Input className="max-w-sm" placeholder="Search..." />
-        <Button asChild>
-          <Link href="/user/add-user">Add User</Link>
-        </Button>
+        <Input className="max-w-sm" placeholder="Search Customer..." />
+        <a href="customer/create">
+          <Button className="bg-blue-600 font-bold">Add Customer</Button>
+        </a>
       </div>
 
       <div className="rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Username</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-black font-bold">FirstName</TableHead>
+              <TableHead className="text-black font-bold">LastName</TableHead>
+              <TableHead className="text-black font-bold">Email</TableHead>
+              <TableHead className="text-black font-bold">Phone</TableHead>
+              <TableHead className="text-black font-bold">Address</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -65,12 +65,13 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
               <TableRow
                 className="cursor-pointer"
                 key={item.id}
-                onClick={() => router.push(`/user/user-info/${item.id}`)}
+                onClick={() => router.push(`/customer/info?id=${item.id}`)}
               >
-                <TableCell>{item.username}</TableCell>
+                <TableCell>{item.firstName}</TableCell>
+                <TableCell>{item.lastName}</TableCell>
                 <TableCell>{item.email}</TableCell>
-                <TableCell>{item.role}</TableCell>
-                <TableCell>{item.isActive ? "Active" : "Inactive"}</TableCell>
+                <TableCell>{item.phone}</TableCell>
+                <TableCell>{item.address}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -82,11 +83,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
         onPageClick={(i) => handlePageClick(i)}
-        path="/user"
+        path="/customer"
         data={paginatedData}
       />
     </div>
   );
-
 };
-
