@@ -11,6 +11,7 @@ const protectedRoutes = [
   "/upload",
   "/promotion",
   "/promotion/create",
+  "/promotion/info",
   "/user",
   "/user/add-user",
   "/stockin/add-purchase",
@@ -18,6 +19,8 @@ const protectedRoutes = [
   "/customer",
   "/customer/create",
   "/productInfo"
+  "/customer/info"
+
 ];
 const publicRoutes = ["/login", "/api/auth/login"];
 

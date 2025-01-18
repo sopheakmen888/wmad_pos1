@@ -14,6 +14,5 @@ COPY . .
 # Run database generation and build the Next.js app
 RUN npm run db:generate && npm run build
 
-# Start the Next.js application
+# Start the Next.js applicationg
 CMD ["npm", "run", "start"]
-
