@@ -205,11 +205,14 @@ const Createpage: React.FC = () =>{
           </div>
         </div>
         <div className="flex gap-2">
-          <Button className="bg-blue-500" type="submit" disabled={isLoading}>
+          <Button 
+          className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300" 
+          type="submit" 
+          disabled={isLoading}>
             {isLoading ? "Saving..." : "Save"}
           </Button>
           <Button
-            className="bg-red-500 text-white hover:bg-black hover:text-white"
+            className="py-2 px-6 bg-gray-300 text-gray-700 font-semibold rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
             variant="outline"
             type="button"
             onClick={() => router.back()}
