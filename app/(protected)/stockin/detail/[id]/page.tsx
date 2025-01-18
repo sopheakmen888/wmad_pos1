@@ -34,7 +34,7 @@ import {
 import { AddPurchaseItemDetailModal } from "./detail";
 import PageWrapper from "@/components/page-wrapper";
 import { ProductModel } from "@/models/api/productModel";
-import { SupplierModel } from "@/models/api/supplier";
+import { SupplierModel } from "@/models/api/supplierModel";
 
 
 interface PurchaseDetail {

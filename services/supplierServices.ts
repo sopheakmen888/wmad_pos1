@@ -1,4 +1,4 @@
-import { SupplierModel } from "@/models/api/supplier";
+import { SupplierModel } from "@/models/api/supplierModel";
 import PaginationData from "@/models/PaginationData";
 import prisma from "@/lib/prisma";
 

@@ -1,324 +1,5 @@
-// "use client";
-
-// import React, { useState, useEffect } from "react";
-// import PageWrapper from "@/components/page-wrapper";
-// import { Button } from "@/components/ui/button";
-// import { useRouter } from "next/navigation";
-
-// const AddSupplierPage = () => {
-//   const router = useRouter();
-//   const [supplierName, setSupplierName] = useState("");
-//   const [contactName, setContactName] = useState("");
-//   const [contactEmail, setContactEmail] = useState("");
-//   const [contactPhone, setContactPhone] = useState("");
-//   const [addressLine1, setAddressLine1] = useState("");
-//   const [addressLine2, setAddressLine2] = useState("");
-//   const [province, setProvince] = useState("");
-//   const [websiteUrl, setWebsiteUrl] = useState("");
-//   const [imageUrl, setImageUrl] = useState("");
-//   const [taxIdentification, setTaxIdentification] = useState("");
-//   const [roles, setRoles] = useState([]);
-//   const [errors, setErrors] = useState<Record<string, string>>({});
-//   const [message, setMessage] = useState("");
-//   const [isLoading, setIsLoading] = useState(false);
-
-//   useEffect(() => {
-//     fetch("/api/user/role", { credentials: "same-origin" })
-//       .then((response) => response.json())
-//       .then((data) => setRoles(data.data))
-//       .catch((error) => console.error("Error fetching roles:", error));
-//   }, []);
-
-//   const validate = () => {
-//     const newErrors: Record<string, string> = {};
-//     if (!supplierName) newErrors.supplierName = "Suppliername is required";
-//     if (!contactName) newErrors.contactName = "Contactname is required";
-//     if (!contactEmail) {
-//       newErrors.contactEmail = "Contactemail is required";
-//     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
-//       newErrors.contactEmail = "Invalid email address";
-//     }
-//     if (!contactPhone) newErrors.contactPhone = "Contactphone is required";
-//     if (!addressLine1) newErrors.addressLine1 = "AddressLine1 is required";
-//     if (!addressLine2) newErrors.addressLine2 = "AddressLine2 is required";
-//     if (!province) newErrors.province = "Province is required";
-//     if (!websiteUrl) newErrors.websiteUrl = "WebsiteUrl is required";
-//     if (!imageUrl) newErrors.imageUrl = "ImageUrl is required";
-//     if (!taxIdentification)
-//       newErrors.taxIdentification = "TaxIdentification is required";
-//     setErrors(newErrors);
-//     return Object.keys(newErrors).length === 0;
-//   };
-
-//   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-//     event.preventDefault();
-
-//     if (!validate()) {
-//       setMessage("Please fix the errors before submitting.");
-//       return;
-//     }
-
-//     setIsLoading(true);
-
-//     const supplierData = {
-//       supplierName,
-//       contactName,
-//       contactEmail,
-//       contactPhone,
-//       addressLine1,
-//       addressLine2,
-//       province,
-//       websiteUrl,
-//       imageUrl,
-//       taxIdentification,
-//     };
-
-//     try {
-//       const response = await fetch("/api/suppliers", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(supplierData),
-//       });
-
-//       if (response.ok) {
-//         setMessage("Supplier added successfully!");
-//         setSupplierName("");
-//         setContactName("");
-//         setContactEmail("");
-//         setContactPhone("");
-//         setAddressLine1("");
-//         setAddressLine2("");
-//         setProvince("");
-//         setWebsiteUrl("");
-//         setImageUrl("");
-//         setTaxIdentification("");
-//         setErrors({});
-//         router.push("/supplier");
-//       } else {
-//         const errorData = await response.json();
-//         setMessage(errorData.message || "Error saving supplier data.");
-//       }
-//     } catch (error) {
-//       console.error("Error:", error);
-//       setMessage("An unexpected error occurred.");
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-  
-
-//   return (
-//     <PageWrapper>
-//       <div className="space-y-6">
-//         <h1 className="text-3xl font-bold">Add Supplier</h1>
-//         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-//           <div className="grid grid-cols-2 gap-4">
-            
-
-
-// <div className="flex flex-col">
-//   <label htmlFor="suppliername">Suppliername</label>
-//   <input
-//     className={`border p-1  bg-gray-100 ${errors.supplierName ? "border-red-500" : ""}`}
-//     type="text"
-//     name="suppliername"
-//     id="suppliername"
-//     value={supplierName}
-//     onChange={(e) => setSupplierName(e.target.value)}
-//     // placeholder="Suppliername"
-//   />
-//   {errors.supplierName && (
-//     <p className="text-sm text-red-600">{errors.supplierName}</p>
-//   )}
-// </div>
-
-
-// <div className="flex flex-col">
-//   <label htmlFor="contactname">Contactname</label>
-//   <input
-//     className={`border p-1  bg-gray-100 ${errors.contactName ? "border-red-500" : ""}`}
-//     type="text"
-//     name="contactname"
-//     id="contactname"
-//     value={contactName}
-//     onChange={(e) => setContactName(e.target.value)}
-//     // placeholder="Contactname"
-//   />
-//   {errors.contactName && (
-//     <p className="text-sm text-red-600">{errors.contactName}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="contactemail">Contactemail</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.contactEmail ? "border-red-500" : ""}`}
-//     type="text"
-//     name="contactemail"
-//     id="contactemail"
-//     value={contactEmail}
-//     onChange={(e) => setContactEmail(e.target.value)}
-//     // placeholder="Contactemail"
-//   />
-//   {errors.contactEmail && (
-//     <p className="text-sm text-red-600">{errors.contactEmail}</p>
-//   )}
-// </div>
-            
-            
-            
-// <div className="flex flex-col">
-//   <label htmlFor="contactphone">Contactphone</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.contactPhone ? "border-red-500" : ""}`}
-//     type="text"
-//     name="contactphone"
-//     id="contactphone"
-//     value={contactPhone}
-//     onChange={(e) => setContactPhone(e.target.value)}
-//     // placeholder="Contactphone"
-//   />
-//   {errors.contactPhone && (
-//     <p className="text-sm text-red-600">{errors.contactPhone}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="addressLine1">AddressLine1</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.addressLine1 ? "border-red-500" : ""}`}
-//     type="text"
-//     name="addressLine1"
-//     id="addressLine1"
-//     value={addressLine1}
-//     onChange={(e) => setAddressLine1(e.target.value)}
-//     // placeholder="AddressLine1"
-//   />
-//   {errors.addressLine1 && (
-//     <p className="text-sm text-red-600">{errors.addressLine1}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="addressLine2">AddressLine2</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.addressLine2 ? "border-red-500" : ""}`}
-//     type="text"
-//     name="addressLine2"
-//     id="addressLine2"
-//     value={addressLine2}
-//     onChange={(e) => setAddressLine2(e.target.value)}
-//     // placeholder="AddressLine2"
-//   />
-//   {errors.addressLine2 && (
-//     <p className="text-sm text-red-600">{errors.addressLine2}</p>
-//   )}
-// </div>
-
-
-// <div className="flex flex-col">
-//   <label htmlFor="province">Province</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.province ? "border-red-500" : ""}`}
-//     type="text"
-//     name="province"
-//     id="province"
-//     value={province}
-//     onChange={(e) => setProvince(e.target.value)}
-//     // placeholder="Province"
-//   />
-//   {errors.province && (
-//     <p className="text-sm text-red-600">{errors.province}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="websiteUrl">WebsiteUrl</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.websiteUrl ? "border-red-500" : ""}`}
-//     type="text"
-//     name="websiteUrl"
-//     id="websiteUrl"
-//     value={websiteUrl}
-//     onChange={(e) => setWebsiteUrl(e.target.value)}
-//     // placeholder="WebsiteUrl"
-//   />
-//   {errors.websiteUrl && (
-//     <p className="text-sm text-red-600">{errors.websiteUrl}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="imageUrl">ImageUrl</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.imageUrl ? "border-red-500" : ""}`}
-//     type="text"
-//     name="imageUrl"
-//     id="imageUrl"
-//     value={imageUrl}
-//     onChange={(e) => setImageUrl(e.target.value)}
-//     // placeholder="ImageUrl"
-//   />
-//   {errors.imageUrl && (
-//     <p className="text-sm text-red-600">{errors.imageUrl}</p>
-//   )}
-// </div>
-
-// <div className="flex flex-col">
-//   <label htmlFor="taxIdentification">TaxIdentification</label>
-//   <input
-//     className={`border p-1 bg-gray-100 ${errors.taxIdentification ? "border-red-500" : ""}`}
-//     type="text"
-//     name="taxIdentification"
-//     id="taxIdentification"
-//     value={taxIdentification}
-//     onChange={(e) => setTaxIdentification(e.target.value)}
-//     // placeholder="TaxIdentification"
-//   />
-//   {errors.taxIdentification && (
-//     <p className="text-sm text-red-600">{errors.taxIdentification}</p>
-//   )}
-// </div>
-
-//             <div className="flex flex-col">
-//               {/* <label htmlFor="imageFile">taxIdentification</label> */}
-//               <input
-//                 type="file"
-//                 name="imageFile"
-//                 id="imageFile"
-//                 value={taxIdentification}
-//                 onChange={(e) => setTaxIdentification(e.target.value)}
-//               />
-//             </div>
-
-//           </div>
-//           <div className="flex gap-2">
-//           <Button className="bg-black" type="submit" disabled={isLoading}>
-//               {isLoading ? "Updata..." : "Update"}
-//             </Button>
-//             <Button className="bg-blue-500" type="submit" disabled={isLoading}>
-//               {isLoading ? "Saving..." : "Save"}
-//             </Button>
-//             <Button
-//               variant="outline"
-//               type="button"
-//               onClick={() => router.back()}> Cancel
-//             </Button>
-//           </div>
-//         </form>
-//       </div>
-//     </PageWrapper>
-//   );
-// };
-
-// export default AddSupplierPage;
-
-
-
-
 "use client";
+
 import React, { useState } from "react";
 import PageWrapper from "@/components/page-wrapper";
 import { Button } from "@/components/ui/button";
@@ -333,7 +14,7 @@ const AddSupplierPage: React.FC = () => {
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactPhone, setContactPhone] = useState("");
-  const [addressLine1, setAddressLine1] = useState("");
+  const [addressLine1, setAddressLine1] = useState("") || null;
   const [addressLine2, setAddressLine2] = useState("");
   const [province, setProvince] = useState("");
   const [websiteUrl, setWebsiteUrl] = useState("");
@@ -355,7 +36,10 @@ const AddSupplierPage: React.FC = () => {
        newErrors.contactEmail = "Invalid email address";
      }
      if (!contactPhone) newErrors.contactPhone = "ContactPhone is required";
-     if (!addressLine1) newErrors.addressLine1 = "AddressLine1 is required";
+     if (addressLine1 === null || addressLine1 === undefined) {
+      newErrors.addressLine1 = "AddressLine1 must be valid if provided";
+    }
+        
      if (!addressLine2) newErrors.addressLine2 = "AddressLine2 is required";
      if (!province) newErrors.province = "Province is required";
      if (!websiteUrl) newErrors.websiteUrl = "WebsiteUrl is required";
@@ -457,18 +141,20 @@ const AddSupplierPage: React.FC = () => {
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Add Supplier</h1>
         {message && <p>{message}</p>}
+        <div className="rounded-md border-2 shadow-sm flex justify-center p-5 h-[660px]">
+        <div className="rounded-md p-5 w-full">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
-            
+
             <div className="flex flex-col">
               <label htmlFor="supplierName">Supplier Name</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="supplierName"
                 value={supplierName}
                 onChange={(e) => setSupplierName(e.target.value)}
-                // placeholder="Supplier Name"
+                placeholder="Supplier Name"
               />
               {errors.supplierName && (
                 <p className="text-sm text-red-600">{errors.supplierName}</p>
@@ -479,12 +165,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="contactName">Contact Name</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="contactName"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                // placeholder="Supplier Name"
+                placeholder="Supplier Name"
               />
               {errors.contactName && (
                 <p className="text-sm text-red-600">{errors.contactName}</p>
@@ -494,12 +180,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="contactEmail">Contact Email</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="email"
                 id="contactEmail"
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
-                // placeholder="Contact Email"
+                placeholder="Contact Email"
               />
               {errors.contactEmail && (
                 <p className="text-sm text-red-600">{errors.contactEmail}</p>
@@ -508,12 +194,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="contactPhone">Contact Phone</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="contactPhone"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
-                // placeholder="Contact Phone"
+                placeholder="Contact Phone"
               />
               {errors.contactPhone && (
                 <p className="text-sm text-red-600">{errors.contactPhone}</p>
@@ -522,12 +208,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="addressLine1">Address Line 1</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="addressLine1"
                 value={addressLine1}
                 onChange={(e) => setAddressLine1(e.target.value)}
-                // placeholder="Address Line 1"
+                placeholder="Address Line 1"
               />
               {errors.addressLine1 && (
                 <p className="text-sm text-red-600">{errors.addressLine1}</p>
@@ -536,12 +222,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="addressLine2">Address Line 2</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="addressLine2"
                 value={addressLine2}
                 onChange={(e) => setAddressLine2(e.target.value)}
-                // placeholder="Address Line 2"
+                placeholder="Address Line 2"
               />
               {errors.addressLine2 && (
                 <p className="text-sm text-red-600">{errors.addressLine2}</p>
@@ -550,12 +236,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="province">Province</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="province"
                 value={province}
                 onChange={(e) => setProvince(e.target.value)}
-                // placeholder="Province"
+                placeholder="Province"
               />
               {errors.province && (
                 <p className="text-sm text-red-600">{errors.province}</p>
@@ -564,12 +250,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="websiteUrl">Website URL</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="websiteUrl"
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
-                // placeholder="Website URL"
+                placeholder="Website URL"
               />
               {errors.websiteUrl && (
                 <p className="text-sm text-red-600">{errors.websiteUrl}</p>
@@ -578,12 +264,12 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="taxIdentification">Tax Identification</label>
               <input
-                className="border p-1"
+                className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="text"
                 id="taxIdentification"
                 value={taxIdentification}
                 onChange={(e) => setTaxIdentification(e.target.value)}
-                // placeholder="Tax Identification"
+                placeholder="Tax Identification"
               />
               {errors.taxIdentification && (
                 <p className="text-sm text-red-600">{errors.taxIdentification}</p>
@@ -592,6 +278,7 @@ const AddSupplierPage: React.FC = () => {
             <div className="flex flex-col">
               <label htmlFor="imageFile">Profile Image</label>
               <input
+              className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
                 type="file"
                 id="imageFile"
                 onChange={(e) => setImageFile(e.target.files?.[0])}
@@ -599,10 +286,10 @@ const AddSupplierPage: React.FC = () => {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button className="bg-blue-500" type="submit" disabled={isLoading}>
+            <Button className="bg-blue-500 hover:bg-black text-white" type="submit" disabled={isLoading}>
               {isLoading ? "Saving..." : "Save"}
             </Button>
-            <Button
+            <Button className="bg-green-500 hover:bg-green-600 hover:text-white text-white"
               variant="outline"
               type="button"
               onClick={() => router.back()}
@@ -611,11 +298,11 @@ const AddSupplierPage: React.FC = () => {
             </Button>
           </div>
         </form>
+        </div>
+        </div>
       </div>
     </PageWrapper>
   );
 };
 
 export default AddSupplierPage;
-
-
