@@ -16,11 +16,8 @@ const protectedRoutes = [
   "/stockin/add-purchase",
   "/",
   "/customer",
-<<<<<<< HEAD
-  "/customer/create"
-=======
-  
->>>>>>> 3aae1dccec21ebc055bc435e1b1c8187b8666461
+  "/customer/create",
+  "/customer/info"
 ];
 const publicRoutes = ["/login", "/api/auth/login"];
 

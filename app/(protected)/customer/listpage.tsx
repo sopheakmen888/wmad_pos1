@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -23,17 +24,19 @@ interface Props {
 
 export const CustomerTable: React.FC<Props> = ({ title, data }) => {
   const [paginatedData, setPaginatedData] = useState(data);
-
-  const handlePrevClick = () => setPaginatedData((prev) => {
-    return { ...prev, currentPage: data.prevPage };
-  });
+  const router = useRouter();
+  const handlePrevClick = () =>
+    setPaginatedData((prev) => {
+      return { ...prev, currentPage: data.prevPage };
+    });
 
   const handleNextClick = () =>
     setPaginatedData((prev) => {
       return { ...prev, currentPage: data.nextPage };
     });
 
-  const handlePageClick = (i: number) => setPaginatedData({ ...paginatedData, currentPage: i + 1 })
+  const handlePageClick = (i: number) =>
+    setPaginatedData({ ...paginatedData, currentPage: i + 1 });
 
   return (
     <div className="space-y-6">
@@ -42,13 +45,13 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search Customer..." />
         <a href="customer/create">
-        <Button className="bg-blue-600 font-bold">Add Customer</Button>
+          <Button className="bg-blue-600 font-bold">Add Customer</Button>
         </a>
       </div>
 
       <div className="rounded-md border">
         <Table>
-          <TableHeader >
+          <TableHeader>
             <TableRow>
               <TableHead className="text-black font-bold">FirstName</TableHead>
               <TableHead className="text-black font-bold">LastName</TableHead>
@@ -59,7 +62,11 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow key={item.id}> 
+              <TableRow
+                className="cursor-pointer"
+                key={item.id}
+                onClick={() => router.push(`/customer/info?id=${item.id}`)}
+              >
                 <TableCell>{item.firstName}</TableCell>
                 <TableCell>{item.lastName}</TableCell>
                 <TableCell>{item.email}</TableCell>
@@ -70,7 +77,6 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
           </TableBody>
         </Table>
       </div>
-      
 
       {/* Pagination */}
       <TableViewPagination
@@ -82,4 +88,4 @@ export const CustomerTable: React.FC<Props> = ({ title, data }) => {
       />
     </div>
   );
-}
+};

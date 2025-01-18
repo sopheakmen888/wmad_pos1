@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import PageWrapper from "@/components/page-wrapper";
+import React, { useState } from "react";
+// import PageWrapper from "@/components/page-wrapper";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-const Createpage = () => {
+const Createpage: React.FC = () =>{
   const { toast } = useToast();
   const router = useRouter();
-  const [firstName, serfirstName] = useState("");
+  const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [email, setemail] = useState("");
   const [phone, setphone] = useState("");
@@ -72,150 +72,155 @@ const Createpage = () => {
   };
 
   return (
-    <PageWrapper>
-      <div className="space-y-6 max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
-          Add Customer
-        </h1>
-        {message && <p>{message}</p>}
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* First Name  */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="firstName"
-                className="text-lg font-medium text-gray-700"
-              >
-                First Name
-              </label>
-              <input
-                className="border border-gray-300 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                type="text"
-                name="firstName"
-                value={firstName}
-                onChange={(e) => {
-                  serfirstName(e.target.value);
-                  setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                }}
-                id="firstName"
-                placeholder="First Name"
-              />
-              {/* <span className="text-sm text-red-500 mt-1">Error</span> */}
-            </div>
-
-            {/* Last Name */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="lastName"
-                className="text-lg font-medium text-gray-700"
-              >
-                Last Name
-              </label>
-              <input
-                className="border border-gray-300 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                type="text"
-                name="lastName"
-                value={lastName}
-                onChange={(e) => {
-                  setlastName(e.target.value);
-                  setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                }}
-                id="lastName"
-                placeholder="Last Name"
-              />
-              {/* <span className="text-sm text-red-500 mt-1">Error</span> */}
-            </div>
-
-            {/* Email */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="email"
-                className="text-lg font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                className="border border-gray-300 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => {
-                  setemail(e.target.value);
-                  setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                }}
-                id="email"
-                placeholder="Email"
-              />
-              {/* <span className="text-sm text-red-500 mt-1">Error</span> */}
-            </div>
-
-            {/* Phone */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="phone"
-                className="text-lg font-medium text-gray-700"
-              >
-                Phone
-              </label>
-              <input
-                className="border border-gray-300 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                type="tel"
-                name="phone"
-                value={phone}
-                onChange={(e) => {
-                  setphone(e.target.value);
-                  setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                }}
-                id="phone"
-                placeholder="Phone"
-              />
-              {/* <span className="text-sm text-red-500 mt-1">Error</span> */}
-            </div>
-
-            {/* Address */}
-            <div className="flex flex-col">
-              <label
-                htmlFor="address"
-                className="text-lg font-medium text-gray-700"
-              >
-                Address
-              </label>
-              <input
-                className="border border-gray-300 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                type="text"
-                name="address"
-                value={address}
-                onChange={(e) => {
-                  setaddress(e.target.value);
-                  setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
-                }}
-                id="address"
-                placeholder="Address"
-              />
-              {/* <span className="text-sm text-red-500 mt-1">Error</span> */}
-            </div>
-
-            {/* Action buttons */}
-            <div className="col-span-2 flex justify-between mt-6">
-              <Button
-                className="bg-blue-500"
-                type="submit"
-                disabled={isLoading}
-              >
-                {isLoading ? "Saving..." : "Save"}
-              </Button>
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => router.back()}
-              >
-                Cancel
-              </Button>
-            </div>
+    
+    <div className="min-h-screen bg-gray-100 p-5">
+    <h1 className="text-3xl font-bold p-5">Add New Customer</h1>
+    <div className=" rounded border flex justify-center p-5">
+    <div className="w-full bg-white shadow-lg rounded-lg p-5 border border-gray-200">
+      {/* <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+        Add New Customer
+      </h2> */}
+      {message && <p>{message}</p>}
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 ">
+          <div className="flex flex-col">
+            <label
+              htmlFor="firstname"
+              className="block text-sm font-medium text-gray-700 capitalize mb-1"
+            >
+              FirstName
+            </label>
+            <input
+              className={`w-full px-4 py-2 rounded-md border "border-red-400" : "border-gray-300"
+            } shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200`}
+              type="text"
+              name="firstName"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => {
+                setfirstName(e.target.value);
+                setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
+              }}
+              placeholder="FirstName"
+            />
+            {errors.firstName && (
+              <p className="text-sm text-red-600">{errors.firstName}</p>
+            )}{" "}
           </div>
-        </form>
-      </div>
-    </PageWrapper>
+          <div className="flex flex-col">
+            <label
+              htmlFor="lastname"
+              className="block text-sm font-medium text-gray-700 capitalize mb-1"
+            >
+              LastName
+            </label>
+            <input
+              className={`w-full px-4 py-2 rounded-md border "border-red-400" : "border-gray-300"
+                } shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200`}
+              type="text"
+              name="lastName"
+              id="lastName"
+              value={lastName}
+              onChange={(e) => {
+                setlastName(e.target.value);
+                setErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
+              }}
+              placeholder="LastName"
+            />
+            {errors.lastName && (
+              <p className="text-sm text-red-600">{errors.lastName}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 capitalize mb-1"
+            >
+              Email
+            </label>
+            <input
+              className={`w-full px-4 py-2 rounded-md border "border-red-400" : "border-gray-300"
+                } shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200`}
+              type="text"
+              name="email"
+              id="email"
+              value={email}
+              onChange={(e) => {
+                setemail(e.target.value);
+                setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+              }}
+              placeholder="Email"
+            />
+            {errors.email && (
+              <p className="text-sm text-red-600">{errors.email}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-gray-700 capitalize mb-1"
+            >
+              Phone
+            </label>
+            <input
+              className={`w-full px-4 py-2 rounded-md border "border-red-400" : "border-gray-300"
+                } shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200`}
+              type="text"
+              name="phone"
+              id="phone"
+              value={phone}
+              onChange={(e) => {
+                setphone(e.target.value);
+                setErrors((prevErrors) => ({ ...prevErrors, phone: "" }));
+              }}
+              placeholder="Phone"
+            />
+            {errors.phone && (
+              <p className="text-sm text-red-600">{errors.phone}</p>
+            )}
+          </div>
+          <div className="flex flex-col">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-700 capitalize mb-1"
+            >
+              Address
+            </label>
+            <input
+              className={`w-full px-4 py-2 rounded-md border "border-red-400" : "border-gray-300"
+                } shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition duration-200`}
+              type="text"
+              name="address"
+              id="address"
+              value={address}
+              onChange={(e) => {
+                setaddress(e.target.value);
+                setErrors((prevErrors) => ({ ...prevErrors, address: "" }));
+              }}
+              placeholder="Address"
+            />
+            {errors.address && (
+              <p className="text-sm text-red-600">{errors.address}</p>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button className="bg-blue-500" type="submit" disabled={isLoading}>
+            {isLoading ? "Saving..." : "Save"}
+          </Button>
+          <Button
+            className="bg-red-500 text-white hover:bg-black hover:text-white"
+            variant="outline"
+            type="button"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </Button>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
   );
 };
 
