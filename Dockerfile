@@ -16,4 +16,3 @@ RUN npm run db:generate && npm run build
 
 # Start the Next.js applicationg
 CMD ["npm", "run", "start"]
-
