@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -15,7 +14,7 @@ import {
 import { ProductModel } from "@/models/api/productModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
-
+import Link from "next/link";
 interface Props {
   title: string;
   data: PaginationData<ProductModel>;
@@ -48,7 +47,7 @@ export const ProductTable: React.FC<Props> = ({ title, data }) => {
         </a>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border ">
         <Table>
           <TableHeader>
             <TableRow>
@@ -62,13 +61,37 @@ export const ProductTable: React.FC<Props> = ({ title, data }) => {
           </TableHeader>
           <TableBody>
             {paginatedData.records.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.nameEn}</TableCell>
-                <TableCell>{item.nameKh}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.sku}</TableCell>
-                <TableCell>{item.imageUrl}</TableCell>
+              <TableRow key={item.id} className="hover:bg-gray-100">
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.id}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.nameEn}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.nameKh}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.category}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.sku}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.imageUrl}
+                  </Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

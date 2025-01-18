@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
-
+import { getSessionDataFromCookie } from "@/app/auth/stateless-session";
 
 export async function PUT(
   request: NextRequest,
@@ -8,12 +8,19 @@ export async function PUT(
 ) {
   try {
     const { id } = params;
-    
-    const body = await request.json();
-    const { nameEn, nameKh, categoryId, sku, updatedBy } = body;
 
+    const body = await request.json();
+    const { nameEn, nameKh, categoryId, sku } = body;
+
+    const authData = await getSessionDataFromCookie();
+    console.log("Auth Data:", authData); // Add this to see what's being returned
+
+    if (!authData) {
+      console.log("No auth data found"); // Add this to confirm when it fails
+      return NextResponse.json("Unauthorized", { status: 401 });
+    }
     // Validate
-    if (!nameEn || !nameKh || !categoryId || !sku || !updatedBy) {
+    if (!nameEn || !nameKh || !categoryId || !sku) {
       return NextResponse.json(
         { message: "All fields are required" },
         { status: 400 }
@@ -38,7 +45,7 @@ export async function PUT(
         nameKh,
         categoryId,
         sku,
-        updatedBy,
+        updatedBy: authData?.userId,
       },
     });
 
@@ -54,7 +61,7 @@ export async function PUT(
   }
 }
 
-// Delete 
+// Delete
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: number } }
@@ -90,13 +97,13 @@ export async function DELETE(
   }
 }
 
-
-
-
 // Get a product by ID
-export async function GET(request: NextRequest, { params }: { params: { id: number } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: number } }
+) {
   try {
-    const { id } = params; 
+    const { id } = params;
 
     const product = await prisma.product.findUnique({
       where: { id: Number(id) },

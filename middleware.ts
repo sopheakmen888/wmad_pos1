@@ -18,6 +18,7 @@ const protectedRoutes = [
   "/",
   "/customer",
   "/customer/create",
+  "/productInfo"
   "/customer/info"
 
 ];
