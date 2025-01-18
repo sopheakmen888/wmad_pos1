@@ -64,7 +64,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         <div className="flex justify-between items-center">
           <Input className="max-w-sm" placeholder="Search products..." />
           <Link href="/stockin/add-purchase">
-            <Button>Add Product</Button>
+            <Button>Add Purchase</Button>
           </Link>
         </div>
 
@@ -75,7 +75,8 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>SupplierId</TableHead>
+            <TableHead>Id</TableHead>
+              <TableHead>Supplier Name</TableHead>
               <TableHead>Reference Number</TableHead>
               <TableHead>Stock In Date</TableHead>
               <TableHead>Supplier Name</TableHead>
@@ -89,9 +90,9 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     <TableRow
       key={item.id}
       className="cursor-pointer hover:bg-gray-100"
-      onClick={() => router.push(`/stockin/detial/${item.id}`)}
-    >
-      <TableCell>{item.supplierId}</TableCell>
+      onClick={() => router.push(`/stockin/detail/${item.id}`)}    >
+        <TableCell>{item.id}</TableCell>
+      <TableCell>{item.supplierName}</TableCell>
       <TableCell>{item.referenceNumber}</TableCell>
       <TableCell>{new Date(item.stockInDate).toLocaleDateString()}</TableCell>
       <TableCell>{item.supplierName}</TableCell>
