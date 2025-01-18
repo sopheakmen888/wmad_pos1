@@ -8,10 +8,15 @@ const protectedRoutes = [
   "/product",
   "/stockin",
   "/upload",
+  "/promotion",
+  "/promotion/create",
+  "/promotion/info",
   "/user",
   "/user/add-user",
   "/stockin/add-purchase",
   "/",
+  "/customer",
+  
 ];
 const publicRoutes = ["/login", "/api/auth/login"];
 
@@ -48,7 +53,6 @@ export default async function middleware(req: NextRequest) {
             { status: 401, headers: { "Content-Type": "application/json" } }
           );
         }
-
         const token = authHeader.split(" ")[1];
         try {
           const session = await decrypt(token);
