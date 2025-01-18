@@ -476,5 +476,4 @@ export default function AddPurchasePage() {
       </Card>
     </PageWrapper>
   );
-
 }
