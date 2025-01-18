@@ -18,7 +18,7 @@ const protectedRoutes = [
   "/",
   "/customer",
   "/customer/create",
-  "/productInfo"
+  "/productInfo",
   "/customer/info"
 
 ];
