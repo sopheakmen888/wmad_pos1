@@ -37,7 +37,7 @@ import { ProductModel } from "@/models/api/productModel";
 import { SupplierModel } from "@/models/api/supplierModel";
 
 interface PurchaseDetail {
-  // id
+  id?: number;
   productId?: number;
   qty?: number;
   purchaseUnitPrice?: number;
@@ -60,7 +60,7 @@ export default function AddPurchasePage() {
   const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null); 
 
   // Form Master
-  // Add state stockIn id
+  const [stockInId, setStockInId] = useState<number>();
   const [refDate, setRefDate] = useState<Date>(new Date());
   const [refNum, setRefNum] = useState<string>("");
   const [supplierId, setSupplierId] = useState<string>("1");
@@ -172,6 +172,7 @@ export default function AddPurchasePage() {
         if (response.ok) {
           const result = await response.json();
           alert("Purchase creation successful!");
+          setStockInId(Number);
           setPurchaseDetail([]);
           setRefNum("");
           setNote("");
@@ -249,7 +250,7 @@ export default function AddPurchasePage() {
                   onChange={(e) => setRefNum(e.target.value)}
                 />
               </div>
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label>Note</Label>
                 <Input
                   className="bg-white"
@@ -257,7 +258,7 @@ export default function AddPurchasePage() {
                   placeholder="Enter note"
                   onChange={(e) => setNote(e.target.value)}
                 />
-              </div>
+              </div> */}
             </div>
 
             {/* Item Selection Section */}
@@ -372,7 +373,7 @@ export default function AddPurchasePage() {
             {/* Footer Section */}
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                <Button onClick={handleSaveMaster}>Save</Button>
+                <Button onClick={handleSaveMaster} className=" bg-blue-500 hover:bg-black  and text-white">Save</Button>
                 <Button variant="outline">
                   <Printer className="w-4 h-4 mr-2" />
                   Save & Print

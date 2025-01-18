@@ -5,7 +5,7 @@ import { CalendarIcon, Search, Plus, X, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter,useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 // import { redirect } from "next/navigation";
 
 import {
@@ -36,13 +36,14 @@ import PageWrapper from "@/components/page-wrapper";
 import { ProductModel } from "@/models/api/productModel";
 import { SupplierModel } from "@/models/api/supplierModel";
 
+
 interface PurchaseDetail {
-  // id
   productId?: number;
   qty?: number;
   purchaseUnitPrice?: number;
   saleUnitPrice?: number;
   totalAmount?: number;
+  supplierId?: number;
   expiryDate?: Date;
 }
 
@@ -54,15 +55,15 @@ type Supplier = {
 export default function AddPurchasePage() {
   const router = useRouter();
   const params = useParams();
-  const purchaseId = params?.id; 
-
+  const purchaseId = params?.id;
+  console.log(".....", purchaseId);
   // Ref Data
   const [suppliers, setSuppliers] = useState<SupplierModel[]>([]);
   const [products, setProducts] = useState<ProductModel[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null); 
+  const [selectedProduct, setSelectedProduct] = useState<ProductModel | null>(null);
 
   // Form Master
-  // Add state stockIn id
+  const [stockInId, setStockInId] = useState<number | null>(null);
   const [refDate, setRefDate] = useState<Date>(new Date());
   const [refNum, setRefNum] = useState<string>("");
   const [supplierId, setSupplierId] = useState<string>("1");
@@ -73,6 +74,7 @@ export default function AddPurchasePage() {
   const [purchaseUnitPrice, setPurchaseUnitPrice] = useState<number>(1);
   const [saleUnitPrice, setSaleUnitPrice] = useState<number>(1);
   const [expiryDate, setExpiryDate] = useState<Date>(new Date());
+  const [supplierName, setSupplierName] = useState<string>("");
 
   // Detail
   const [purchaseDetail, setPurchaseDetail] = useState<PurchaseDetail[]>([]);
@@ -80,13 +82,15 @@ export default function AddPurchasePage() {
   // Add Purchase Item Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+
   useEffect(() => {
-    fetch("/api/supplier", { credentials: "same-origin" })
-      .then((res) => res.json())
-      .then((data) => {
-        const suppliers = data.data as SupplierModel[];
-        setSuppliers(suppliers);
-      });
+    // fetch("/api/supplier", { credentials: "same-origin" })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     const suppliers = data.data as SupplierModel[];
+    //     setSuppliers(suppliers);
+    //   });
 
     fetch("/api/product", { credentials: "same-origin" })
       .then((res) => res.json())
@@ -103,12 +107,19 @@ export default function AddPurchasePage() {
       fetch(`/api/stockin/${purchaseId}`, { credentials: "same-origin" })
         .then((res) => res.json())
         .then((data) => {
-          const purchase = data.data;
+          if (!data.data) {
+            console.error("No data received:", data.message);
+            return;
+          }
 
+          const purchase = data.data;
+          console.log(purchase);
           // Populate state with fetched data
           setRefDate(new Date(purchase.stockInDate));
+          setNote(purchase.note);
           setRefNum(purchase.referenceNumber);
-          setSupplierId(purchase.supplierId.toString());
+          setSupplierId(purchase.supplierId.toString() || (""));
+          setSupplierName(purchase.supplierId.supplierName || "Unknown Supplier");
           setPurchaseDetail(
             purchase.stockInDetails.map((detail: any) => ({
               productId: detail.productId,
@@ -116,13 +127,17 @@ export default function AddPurchasePage() {
               purchaseUnitPrice: detail.purchaseUnitPrice,
               saleUnitPrice: detail.saleUnitPrice,
               totalAmount: detail.totalPrice,
-              expiryDate: new Date(detail.expiryDate),
+              expiryDate: detail.expiryDate ? new Date(detail.expiryDate) : null,
             }))
           );
         })
         .catch((error) => console.error("Error fetching purchase data:", error));
     }
   }, [purchaseId]);
+  console.log(purchaseId)
+
+
+
 
   const handleAddPurchaseDetail = () => {
     if (!selectedProduct || qty <= 0 || purchaseUnitPrice <= 0 || saleUnitPrice <= 0) {
@@ -160,17 +175,17 @@ export default function AddPurchasePage() {
       alert("Please enter an invoice reference.");
       return;
     }
-  
+
     if (!supplierId) {
       alert("Please select a supplier.");
       return;
     }
-  
+
     if (purchaseDetail.length === 0) {
       alert("Please add at least one purchase detail.");
       return;
     }
-  
+
     // Prepare purchase data
     const purchaseData = {
       supplierId: parseInt(supplierId),
@@ -185,11 +200,10 @@ export default function AddPurchasePage() {
         expiryDate: item.expiryDate,
       })),
     };
-  
-    console.log(purchaseData);
-  
+
+
     // Send data to the API using PUT
-    fetch("/api/stockin", {
+    fetch(`/api/stockin/${purchaseId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -216,7 +230,39 @@ export default function AddPurchasePage() {
         alert("Purchase update failed");
       });
   };
-  
+
+  const handleFullDelete = () => {
+    if (!purchaseId) {
+      alert("No purchase to delete.");
+      return;
+    }
+
+    const confirmDelete = confirm("Are you sure you want to delete this purchase?");
+    if (!confirmDelete) return;
+
+    fetch(`/api/stockin/${purchaseId}`, {
+      method: "DELETE",
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          alert("Purchase deleted successfully!");
+          router.push("/stockin"); // Redirect to the stock-in list
+        } else {
+          const errorData = await response.json();
+          alert(`Error: ${errorData.message}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting purchase:", error);
+        alert("Failed to delete the purchase.");
+      });
+  };
+
+  const handleRemoveData = () => {
+    setPurchaseDetail([]);
+    console.log('Data removed');
+    router.push("/stockin");
+  };
 
   return (
     <PageWrapper>
@@ -250,23 +296,21 @@ export default function AddPurchasePage() {
               <div className="space-y-2">
                 <Label>Supplier</Label>
                 <Select
-                  defaultValue={supplierId}
+                  value={supplierId}
                   onValueChange={(value) => setSupplierId(value)}
                 >
                   <SelectTrigger className="bg-white">
                     <SelectValue placeholder="Select supplier" />
                   </SelectTrigger>
                   <SelectContent>
-                    {suppliers.map((item) => (
-                      <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.supplierName}
-                      </SelectItem>
-                    ))}
+                    <SelectItem key={supplierId} value={supplierId}>
+                      {supplierName || "Unknown Supplier"}
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-  
+
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-2">
                 <Label>Invoice Reference</Label>
@@ -275,19 +319,11 @@ export default function AddPurchasePage() {
                   className="bg-white"
                   placeholder="Enter invoice reference"
                   onChange={(e) => setRefNum(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Note</Label>
-                <Input
-                  className="bg-white"
-                  type="text"
-                  placeholder="Enter note"
-                  onChange={(e) => setNote(e.target.value)}
+                  value={refNum}
                 />
               </div>
             </div>
-  
+
             {/* Item Selection Section */}
             <div className="grid grid-cols-12 gap-4 items-end">
               <div className="col-span-4 space-y-2">
@@ -333,7 +369,7 @@ export default function AddPurchasePage() {
                   step={0.01}
                 />
               </div>
-  
+
               <div className="col-span-2 space-y-2">
                 <Label>Expiry Date</Label>
                 <Popover>
@@ -356,19 +392,20 @@ export default function AddPurchasePage() {
                   </PopoverContent>
                 </Popover>
               </div>
-  
+
               <div className="col-span-2 flex gap-2">
                 <Button className="flex-1" onClick={handleAddPurchaseDetail}>
                   <Plus className="w-4 h-4 mr-1" />
                   Add
                 </Button>
-                <Button variant="destructive">
-                  <X className="w-4 h-4" />
+                <Button variant="destructive"
+                >
+                  <X className="w-4 h-4" onClick={handleRemoveData} />
                 </Button>
               </div>
-              
+
             </div>
-  
+
             {/* Items Table */}
             <div className="border rounded-lg bg-white">
               <Table>
@@ -389,22 +426,21 @@ export default function AddPurchasePage() {
                       <TableCell>{products.find((product) => product.id === item.productId)?.nameEn}</TableCell>
                       <TableCell>{products.find((product) => product.id === item.productId)?.nameKh}</TableCell>
                       <TableCell className="text-right">{item.qty}</TableCell>
-                      <TableCell className="text-right">{item.purchaseUnitPrice?.toFixed(2)}</TableCell>
-                      <TableCell className="text-right">{item.totalAmount?.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">{item.purchaseUnitPrice}</TableCell>
+                      <TableCell className="text-right">{item.totalAmount}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </div>
-  
+
             {/* Footer Section */}
             <div className="flex items-center justify-between">
               <div className="flex gap-2">
-                <Button onClick={handleSaveMaster}>Save</Button>
-                <Button variant="outline">
-                  <Printer className="w-4 h-4 mr-2" />
-                  Save & Print
-                </Button>
+                <Button onClick={handleSaveMaster} className=" bg-blue-500 hover:bg-black  and text-white">Save</Button>
+                <Button className="bg-green-500 hover:bg-green-600 text-white" onClick={() => router.back()} >Cancle</Button>
+                <Button className="bg-red-500 hover:bg-red-600 text-white" onClick={handleFullDelete}>Delete</Button>
+
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
@@ -419,7 +455,7 @@ export default function AddPurchasePage() {
                   <Label>Total Amt:</Label>
                   <Input
                     className="w-32"
-                    value={`$${totalAmount.toFixed(2)}`}
+                    value={`$${totalAmount}`}
                     readOnly
                   />
                 </div>
@@ -427,12 +463,12 @@ export default function AddPurchasePage() {
             </div>
           </div>
         </CardContent>
-  
+
         <AddPurchaseItemDetailModal
           products={products}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
-          onItemSelect={(item) => { 
+          onItemSelect={(item) => {
             setSelectedProduct(item);
             setIsModalOpen(false)
           }}
@@ -440,5 +476,4 @@ export default function AddPurchasePage() {
       </Card>
     </PageWrapper>
   );
-  
 }
