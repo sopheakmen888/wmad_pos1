@@ -152,55 +152,75 @@ const UpdateCustomer: React.FC = () => {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg- p-8 rounded-lg shadow-lg w-full max-w-xl">
-        <h1 className="text-3xl font-semibold mb-8 text-center text-gray-800">Update Customer</h1>
-
-        {["firstName", "lastName", "email", "phone", "address"].map((field) => (
-          <div key={field} className="mb-6">
-            <label htmlFor={field} className="block text-lg font-medium text-gray-700 capitalize">
-              {field}
-            </label>
-            <input
-              type={field === "email" ? "email" : "text"}
-              name={field}
-              id={field}
-              value={formData[field as keyof FormData] || ""}
-              onChange={handleChange}
-              placeholder={`Enter your ${field}`}
-              className={`mt-2 block w-full px-4 py-3 rounded-md border ${
-                errors[field as keyof Errors] ? "border-black" : "border-gray-300"
-              } shadow-sm focus:border-indigo-600 focus:ring focus:ring-indigo-500 focus:ring-opacity-50`}
-            />
-            {errors[field as keyof Errors] && (
-              <p className="text-red-500 text-sm mt-1">{errors[field as keyof Errors]}</p>
+    <div className="space-y-6 p-5">
+      <h1 className="text-3xl font-bold">Update Customer</h1>
+      <div className="rounded-md border-2 shadow-sm flex justify-center p-5 h-[660px]">
+        <div className="rounded-md p-5 w-full">
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+              {["firstName", "lastName", "email", "phone", "address"].map((field) => (
+                <div key={field} className="flex flex-col">
+                  <label
+                    htmlFor={field}
+                    className="mb-2 text-sm font-medium text-gray-700 capitalize"
+                  >
+                    {field}
+                  </label>
+                  <input
+                    type={field === "email" ? "email" : "text"}
+                    name={field}
+                    id={field}
+                    value={formData[field as keyof FormData] || ""}
+                    onChange={handleChange}
+                    placeholder={`Enter your ${field}`}
+                    className={`border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 shadow-sm ${
+                      errors[field as keyof Errors] ? "border-black" : ""
+                    }`}
+                  />
+                  {errors[field as keyof Errors] && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors[field as keyof Errors]}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="space-x-5 mt-5 flex justify-normal">
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                disabled={loading}
+              >
+                {loading ? "Updating..." : "Update"}
+              </button>
+              <button
+                type="button"
+                className="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                onClick={() => router.back()}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              >
+                Delete Customer
+              </button>
+            </div>
+            {submitSuccess && (
+              <p className="text-blue-500 text-lg mt-4 text-center">
+                Customer updated successfully!
+              </p>
             )}
-          </div>
-        ))}
-
-        <button
-          type="submit"
-          className="w-full py-3 px-6 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          disabled={loading}
-        >
-
-          {loading ? "Updating..." : "Update"}
-        </button>
-
-        <button
-          type="button"
-          onClick={handleDelete}
-          className="w-full py-3 px-6 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-4"
-        >
-          Delete Customer
-        </button>
-
-        {submitSuccess && (
-          <p className="text-blue-500 text-lg mt-4 text-center">Customer updated successfully!</p>
-        )}
-      </form>
+          </form>
+        </div>
+      </div>
     </div>
   );
+  
+  
+  
 };
 
 export default UpdateCustomer;
