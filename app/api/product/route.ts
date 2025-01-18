@@ -15,16 +15,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { nameEn, nameKh, categoryId, sku } = body;
 
-    console.log("nameEn", nameEn);
-    console.log("nameKh", nameKh);
-    console.log("categoryId", categoryId);
-    console.log("sku", sku);
 
     // validate form data from client
     // logic to save to database
 
     const authData = await getSessionDataFromCookie();
     // console.log("Cookie", authData);
+    console.log("Auth Data:", authData); // Add this to see what's being returned
+
 
     if (!authData) {
       return NextResponse.json("Unauthorized", { status: 401 });
