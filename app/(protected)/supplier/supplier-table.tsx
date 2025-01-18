@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SupplierModel } from "@/models/api/supplier";
+import { SupplierModel } from "@/models/api/supplierModel";
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
 import Link from "next/link";
@@ -70,7 +70,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
               <TableRow
                 className="cursor-pointer"
                 key={item.id}
-                onClick={() => router.push("/supplier/infosupplier")}
+                onClick={() => router.push(`/supplier/infosupplier?id=${item.id}`)}
               >
                 <TableCell>{item.supplierName}</TableCell>
                 <TableCell>{item.contactName}</TableCell>
