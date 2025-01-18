@@ -99,7 +99,7 @@ const AddCustomer: React.FC = () => { //state variable
   };
   return (
     <div className="space-y-6 p-5">
-      <h1 className="text-3xl font-bold">Update Customer</h1>
+      <h1 className="text-3xl font-bold">Add Customer</h1>
       <div className="rounded-md border-2 shadow-sm flex justify-center p-5 h-[660px]">
         <div className="rounded-md p-5 w-full">
           <form onSubmit={handleSubmit}>
@@ -137,7 +137,7 @@ const AddCustomer: React.FC = () => { //state variable
                 className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 disabled={loading}
               >
-                {loading ? "Updating..." : "Update"}
+                {loading ? "Updating..." : "Submit"}
               </button>
               <button
                 type="button"
@@ -146,17 +146,11 @@ const AddCustomer: React.FC = () => { //state variable
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                // onClick={handleDelete}
-                className="bg-red-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              >
-                Delete Customer
-              </button>
+            
             </div>
             {submitSuccess && (
               <p className="text-blue-500 text-lg mt-4 text-center">
-                Customer updated successfully!
+                Customer Add successfully!
               </p>
             )}
           </form>
