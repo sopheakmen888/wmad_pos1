@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Add useEffect import
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -21,9 +21,26 @@ interface Props {
   data: PaginationData<PromotionModel>;
 }
 
+function useDebounce(value: string, delay: number) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => clearTimeout(handler); // Cleanup the timeout
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 export const PageTableView: React.FC<Props> = ({ title, data }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchQueryDebounced = useDebounce(searchQuery, 300); // Debounce search query
   const [paginatedData, setPaginatedData] = useState(data);
   const router = useRouter();
+
   const handlePrevClick = () => {
     if (paginatedData.prevPage && paginatedData.prevPage >= 1) {
       setPaginatedData((prev) => ({ ...prev, currentPage: paginatedData.prevPage }));
@@ -42,15 +59,28 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
     }
   };
 
+  const filteredRecords = paginatedData.records.filter((item) =>
+    item.promotionCode.toLowerCase().includes(searchQueryDebounced.toLowerCase()) ||
+    item.description?.toLowerCase().includes(searchQueryDebounced.toLowerCase()) ||
+    new Date(item.startDate).toLocaleDateString().toLowerCase().includes(searchQueryDebounced.toLowerCase()) ||
+    new Date(item.endDate).toLocaleDateString().toLowerCase().includes(searchQueryDebounced.toLowerCase()) ||
+    item.discountPercentage.toString().toLowerCase().includes(searchQueryDebounced.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{title}</h1>
 
       <div className="flex justify-between items-center">
-        <Input className="max-w-sm" placeholder="Search promotions..." />
-        <a href="/promotion/create"> <Button >Add Promotion</Button></a>
-      
-        
+        <Input
+          className="max-w-sm"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <a href="/promotion/create">
+          <Button>Add Promotion</Button>
+        </a>
       </div>
 
       <div className="rounded-md border">
@@ -65,17 +95,19 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedData.records.map((item) => (
-              <TableRow key={item.id}
-              onClick={() => router.push(`/promotion/info?id=${item.id}`)}
-              style={{ cursor: "pointer" }}
-              role="link"
-              onMouseOver={(e) =>
-                (e.currentTarget.style.textDecoration = "underline")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.textDecoration = "none")
-              }>
+            {filteredRecords.map((item) => (
+              <TableRow
+                key={item.id}
+                onClick={() => router.push(`/promotion/info?id=${item.id}`)}
+                style={{ cursor: "pointer" }}
+                role="link"
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.textDecoration = "underline")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.textDecoration = "none")
+                }
+              >
                 <TableCell>{item.promotionCode}</TableCell>
                 <TableCell>{item.description}</TableCell>
                 <TableCell>{new Date(item.startDate).toLocaleDateString()}</TableCell>
@@ -83,7 +115,7 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
                 <TableCell>
                   {item.discountPercentage !== undefined && item.discountPercentage !== null
                     ? `${Number(item.discountPercentage).toFixed(2)}%`
-                    : 'N/A'}
+                    : "N/A"}
                 </TableCell>
               </TableRow>
             ))}
