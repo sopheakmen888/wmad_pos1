@@ -30,7 +30,7 @@ export const TableViewPagination: React.FC<Props<DataModel>> = ({ onPageClick, o
       {[...Array(data.totalPages)].map((_, i) => (
         <PaginationItem key={i}>
           <PaginationLink
-            href={`/user?page=${i + 1}`}
+            href={`${path}?page=${i + 1}`}
             onClick={() => onPageClick(i)}
             isActive={data.currentPage === i + 1}
           >
