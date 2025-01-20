@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { PromotionModel } from "@/models/api/promotionModel";
+import { PromotionCreateModel } from "@/models/api/promotionModel";
 
 async function getPaginatedPromotions(page: number, pageSize: number) {
   const promotions = await prisma.promotion.findMany({
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ message: "success", data: promotions });
 }
 
-async function createPromotion(data: PromotionModel) {
+async function createPromotion(data: PromotionCreateModel) {
   return await prisma.promotion.create({
     data,
   });
