@@ -1,5 +1,6 @@
-"use client"
-import React, { useState} from "react";
+
+"use client";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,32 +12,67 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { SupplierModel } from "@/models/api/supplierModel";
-
 import PaginationData from "@/models/PaginationData";
 import { TableViewPagination } from "@/components/tableview-pagination";
+import { useRouter } from "next/navigation";
 
 interface SupplierTableProps {
   title: string;
-  data: PaginationData<SupplierModel>; 
+  data: PaginationData<SupplierModel>;
 }
 
 export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const router = useRouter();
 
-  const handlePrevClick = () =>
-    setLoading(true);
+  const handlePrevClick = async () => {
+    try {
+      setLoading(true);
+      const prevPage = data.currentPage - 1;
+      if (prevPage > 0) {
+        router.push(`/supplier?page=${prevPage}`);
+      }
+    } catch (err) {
+      setError("Failed to load previous page.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handleNextClick = () =>
-    setLoading(true);
+  const handleNextClick = async () => {
+    try {
+      setLoading(true);
+      const nextPage = data.currentPage + 1;
+      if (nextPage <= data.totalPages) {
+        router.push(`/supplier?page=${nextPage}`);
+      }
+    } catch (err) {
+      setError("Failed to load next page.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const handlePageClick = (i: number) => {
+  const handlePageClick = async (i: number) => {
+    try {
+      setLoading(true);
+      router.push(`/supplier?page=${i}`);
+    } catch (err) {
+      setError(`Failed to load page ${i}.`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
+  if (!data || !data.records) {
+    return <p>No data available</p>;
+  }
 
   return (
     <div className="space-y-6">
@@ -49,7 +85,9 @@ export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => 
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <Button>Add Supplier</Button>
+        <Button onClick={() => router.push("/supplier/add-supplier")}>
+          Add Supplier
+        </Button>
       </div>
 
       {loading && <p>Loading...</p>}
@@ -69,13 +107,18 @@ export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => 
           </TableHeader>
           <TableBody>
             {data.records.map((supplier) => (
-              <TableRow key={supplier.id}>
-                <TableCell>{supplier.supplierName }</TableCell>
-                <TableCell>{supplier.contactName }</TableCell>
-                <TableCell>{supplier.contactEmail }</TableCell>
-                <TableCell>{supplier.contactPhone }</TableCell>
-                <TableCell>{supplier.province }</TableCell>
-                <TableCell>{supplier.taxIdentification }</TableCell>
+              <TableRow
+                key={supplier.id}
+                onClick={() => router.push(`/supplier/info?id=${supplier.id}`)}
+                className="cursor-pointer hover:underline"
+                role="link"
+              >
+                <TableCell>{supplier.supplierName}</TableCell>
+                <TableCell>{supplier.contactName}</TableCell>
+                <TableCell>{supplier.contactEmail}</TableCell>
+                <TableCell>{supplier.contactPhone}</TableCell>
+                <TableCell>{supplier.province}</TableCell>
+                <TableCell>{supplier.taxIdentification}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -85,10 +128,11 @@ export const SupplierTable: React.FC<SupplierTableProps> = ({ title, data }) => 
       <TableViewPagination
         onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
-        onPageClick={(i) => handlePageClick(i)}
+        onPageClick={handlePageClick}
         path="/supplier"
         data={data}
       />
     </div>
   );
 };
+

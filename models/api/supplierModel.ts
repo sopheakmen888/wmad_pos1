@@ -15,4 +15,5 @@ export interface SupplierModel extends DataModel {
   createdAt: Date;
   updatedAt?: Date;
   StockIn: any; 
+
 }
