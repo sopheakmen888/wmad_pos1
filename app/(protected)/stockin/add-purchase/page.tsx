@@ -32,12 +32,12 @@ import { AddPurchaseItemDetailModal } from "./add-purchase-item-detail-modal";
 import PageWrapper from "@/components/page-wrapper";
 import { ProductRefModel } from "@/app/api/product0/route";
 
-interface PurchaseDetail {
-  productId?: number;
-  qty?: number;
-  purchaseUnitPrice?: number;
-  saleUnitPrice?: number;
-}
+// interface PurchaseDetail {
+//   productId?: number;
+//   qty?: number;
+//   purchaseUnitPrice?: number;
+//   saleUnitPrice?: number;
+// }
 
 type Supplier = {
   id: number;
@@ -63,7 +63,7 @@ export default function AddPurchasePage() {
   const [expiryDate, setExpiryDate] = useState<Date>(new Date());
 
   // Detail
-  const [purchaseDetail, setPurchaseDetail] = useState<PurchaseDetail[]>();
+  // const [purchaseDetail, setPurchaseDetail] = useState<PurchaseDetail[]>();
 
   // Add Purchase Item Modal
   const [isModalOpen, setIsModalOpen] = useState(false);

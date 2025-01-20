@@ -28,7 +28,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ItemSelectModal } from "./add-purchase/add-purchase-item-detail-modal";
+import { AddPurchaseItemDetailModal } from "./add-purchase/add-purchase-item-detail-modal";
 import PageWrapper from "@/components/page-wrapper";
 
 interface PurchaseItem {
@@ -257,7 +257,8 @@ export default function PurchaseOrder() {
           </div>
         </CardContent>
 
-        <ItemSelectModal
+        <AddPurchaseItemDetailModal
+          products={[]}
           open={isModalOpen}
           onOpenChange={setIsModalOpen}
           onItemSelect={() => console.log("item selected...")}
