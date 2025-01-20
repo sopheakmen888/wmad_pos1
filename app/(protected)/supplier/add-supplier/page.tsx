@@ -260,3 +260,4 @@ const AddSupplier: React.FC = () => {
 };
 
 export default AddSupplier;
+

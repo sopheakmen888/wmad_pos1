@@ -40,10 +40,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-toastify": "^11.0.2",
-<<<<<<< HEAD
     "shadcn-ui": "^0.9.4",
-=======
->>>>>>> 9ccde311a5ed6d467f88c2814ac27917c95eef22
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "toast": "^0.5.4",
