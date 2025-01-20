@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -11,34 +11,48 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import { ProductModel } from "@/models/api/productModel";
+import PaginationData from "@/models/PaginationData";
+import { TableViewPagination } from "@/components/tableview-pagination";
+import Link from "next/link";
+interface Props {
+  title: string;
+  data: PaginationData<ProductModel>;
+}
 
-const data = Array.from({ length: 25 }, (_, i) => ({
-  id: i + 1,
-  productName: `Product ${i + 1}`,
-  category: i % 2 === 0 ? "Electronics" : "Clothing",
-  actualPrice: `$${(20 + i * 5).toFixed(2)}`,
-  stock: i % 3 === 0 ? 0 : 50 + i * 3,
-  imageUrl: `https://via.placeholder.com/150?text=Product+${i + 1}`,
-  supplier: i % 2 === 0 ? "Supplier A" : "Supplier B",
-}));
+export const ProductTable: React.FC<Props> = ({ title, data }) => {
+  
+  const [paginatedData, setPaginatedData] = useState<PaginationData<ProductModel>>({
+    currentPage: 1,
+    nextPage:1,
+    prevPage:1,
+    pageSize:10,
+    records:[],
+    totalPages:1,
+    totalItems:1
+  });
 
-export default function ProductTable() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const handlePrevClick = () =>
+    setPaginatedData((prev) => {
+      return { ...prev, currentPage: data.prevPage };
+    });
 
-  const currentData = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const handleNextClick = () =>
+    setPaginatedData((prev) => {
+      return { ...prev, currentPage: data.nextPage };
+    });
+
+  const handlePageClick = (i: number) =>
+    setPaginatedData({ ...paginatedData, currentPage: i + 1 });
+
+  useEffect(() => {
+    // Fetch existing products
+    fetch("/api/product?currentPage=1&pageSize=10", { credentials: "same-origin" })
+      .then((response) => response.json())
+      .then((data) => setPaginatedData(data.data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
 
   return (
     <div className="space-y-6">
@@ -46,41 +60,55 @@ export default function ProductTable() {
 
       <div className="flex justify-between items-center">
         <Input className="max-w-sm" placeholder="Search products..." />
-        <Button>Add Product</Button>
+        <a href="/product/create">
+          <Button>Add Product</Button>
+        </a>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border ">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>ID</TableHead>
-              <TableHead>Name</TableHead>
+              <TableHead>English Name</TableHead>
+              <TableHead>Khmer Name</TableHead>
               <TableHead>Category</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Supplier</TableHead>
+              <TableHead>Sku</TableHead>
               <TableHead>Image</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentData.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.productName}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.actualPrice}</TableCell>
+            {paginatedData.records.map((item) => (
+              <TableRow key={item.id} className="hover:bg-gray-100">
                 <TableCell>
-                  {item.stock > 0 ? `${item.stock} units` : "Out of Stock"}
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.id}
+                  </Link>
                 </TableCell>
-                <TableCell>{item.supplier}</TableCell>
                 <TableCell>
-                  {/* <Image
-                    src={item.imageUrl}
-                    alt={item.productName}
-                    width={64}
-                    height={64}
-                    className="object-cover rounded-md"
-                  /> */}
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.nameEn}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.nameKh}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.category}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.sku}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link href={`/productInfo/${item.id}`} className="block">
+                    {item.imageUrl}
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
@@ -88,35 +116,14 @@ export default function ProductTable() {
         </Table>
       </div>
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            />
-          </PaginationItem>
-          {[...Array(totalPages)].map((_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink
-                href="#"
-                onClick={() => setCurrentPage(i + 1)}
-                isActive={currentPage === i + 1}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      {/* Pagination */}
+      <TableViewPagination
+        onPrevClick={handlePrevClick}
+        onNextClick={handleNextClick}
+        onPageClick={(i) => handlePageClick(i)}
+        path="/product"
+        data={paginatedData}
+      />
     </div>
   );
-}
+};
