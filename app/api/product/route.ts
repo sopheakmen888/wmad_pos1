@@ -1,6 +1,7 @@
 import { getSessionDataFromCookie } from "@/app/auth/stateless-session";
 import prisma from "@/lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
+import { getProductlist } from "@/services/productServices";
 
 export interface ProductRefModel {
   id: number;
@@ -86,15 +87,22 @@ export async function POST(request: NextRequest) {
 }
 
 //Get Product
-
-export async function GET(request: NextRequest) {
+export async function GET(req: NextRequest) {
   try {
-    const data = await prisma.product.findMany();
-    return NextResponse.json({ success: true, data });
+    const pageSize = parseInt(
+      req.nextUrl.searchParams.get("pageSize") as string
+    );
+    const currentPage = parseInt(
+      req.nextUrl.searchParams.get("currentPage") as string
+    );
+
+    const data = await getProductlist({ pageSize, currentPage });
+
+    return NextResponse.json({ message: "Success", data });
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error(error);
     return NextResponse.json(
-      { success: false, message: "Failed to fetch products" },
+      { message: "Something went wrong", data: [] },
       { status: 500 }
     );
   }

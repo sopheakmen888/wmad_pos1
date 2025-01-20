@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,7 +21,16 @@ interface Props {
 }
 
 export const ProductTable: React.FC<Props> = ({ title, data }) => {
-  const [paginatedData, setPaginatedData] = useState(data);
+  
+  const [paginatedData, setPaginatedData] = useState<PaginationData<ProductModel>>({
+    currentPage: 1,
+    nextPage:1,
+    prevPage:1,
+    pageSize:10,
+    records:[],
+    totalPages:1,
+    totalItems:1
+  });
 
   const handlePrevClick = () =>
     setPaginatedData((prev) => {
@@ -35,6 +44,15 @@ export const ProductTable: React.FC<Props> = ({ title, data }) => {
 
   const handlePageClick = (i: number) =>
     setPaginatedData({ ...paginatedData, currentPage: i + 1 });
+
+  useEffect(() => {
+    // Fetch existing products
+    fetch("/api/product?currentPage=1&pageSize=10", { credentials: "same-origin" })
+      .then((response) => response.json())
+      .then((data) => setPaginatedData(data.data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
 
   return (
     <div className="space-y-6">

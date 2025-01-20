@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-
 import PageWrapper from "@/components/page-wrapper";
 
 interface Product {
@@ -18,6 +17,11 @@ interface ProductCategory {
   nameEn: string;
 }
 
+interface StatusMessage {
+  message: string;
+  type: "success" | "error" | "";
+}
+
 export default function ProductDetails() {
   const [product, setProduct] = useState<Product | null>(null);
   const [nameEn, setNameEn] = useState<string>("");
@@ -28,6 +32,10 @@ export default function ProductDetails() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [category, setCategory] = useState<ProductCategory[]>([]);
+  const [status, setStatus] = useState<StatusMessage>({
+    message: "",
+    type: "",
+  });
 
   const { id } = useParams();
   const router = useRouter();
@@ -35,33 +43,37 @@ export default function ProductDetails() {
   useEffect(() => {
     if (!id) return;
 
-    fetch("/api/category", { credentials: "same-origin" })
-      .then((response) => response.json())
-      .then((data) => setCategory(data.data));
-
-    const fetchProduct = async () => {
+    const fetchCategoryAndProduct = async () => {
       try {
-        const response = await fetch(`/api/product/${id}`);
-        const data = await response.json();
+        const categoryResponse = await fetch("/api/category", {
+          credentials: "same-origin",
+        });
+        const categoryData = await categoryResponse.json();
+        setCategory(categoryData.data);
 
-        if (response.ok) {
-          setProduct(data.product);
-          setNameEn(data.product.nameEn);
-          setNameKh(data.product.nameKh);
-          setCategoryId(data.product.categoryId);
-          setSku(data.product.sku);
+        const productResponse = await fetch(`/api/product/${id}`, {
+          credentials: "same-origin",
+        });
+        const productData = await productResponse.json();
+
+        if (productResponse.ok) {
+          setProduct(productData.product);
+          setNameEn(productData.product.nameEn);
+          setNameKh(productData.product.nameKh);
+          setCategoryId(productData.product.categoryId);
+          setSku(productData.product.sku);
         } else {
-          setError(data.message);
+          setError(productData.message || "Failed to load product details.");
         }
       } catch (err) {
-        console.error("Failed to fetch product:", err);
-        setError("Something went wrong.");
+        console.error("Error fetching data:", err);
+        setError("Something went wrong. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
+    fetchCategoryAndProduct();
   }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,26 +86,52 @@ export default function ProductDetails() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(0),
+        body: JSON.stringify({ nameEn, nameKh, categoryId, sku }),
       });
 
       const data = await response.json();
-      console.log("Response:", data);
+
       if (response.ok) {
-        alert("Product updated successfully!");
+        setStatus({
+          message: "Product updated successfully!",
+          type: "success",
+        });
+        setTimeout(() => router.push("/product"), 1000);
       } else {
-        setError(data.message);
+        setStatus({
+          message: data.message || "Failed to update product.",
+          type: "error",
+        });
       }
     } catch (err) {
       console.error("Failed to update product:", err);
-      setError("Something went wrong.");
+      setStatus({ message: "Something went wrong.", type: "error" });
     } finally {
       setIsLoading(false);
     }
   };
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/product/${id}`, {
+        method: "DELETE",
+      });
 
+      const data = await response.json();
+      if (response.ok) {
+        setStatus({ message: "Product deleted successfully!", type: "success" });
+        setTimeout(() => {
+          router.push("/product");
+        }, 1000);
+      } else {
+        setStatus({ message: data.message || "Failed to delete product.", type: "error" });
+      }
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      setStatus({ message: "Something went wrong. Please try again.", type: "error" });
+    }
+  };
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   const handleCancel = () => {
     router.push("/product");
@@ -104,8 +142,21 @@ export default function ProductDetails() {
       <div className="space-y-6">
         <h1 className="text-3xl font-bold">Edit Product</h1>
 
+        {status.message && (
+          <div
+            className={`p-4 rounded-md ${
+              status.type === "success"
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
+            {status.message}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-6 p-6 bg-gray-50 rounded-lg shadow-lg">
+            {/* Form Fields */}
             <div className="flex flex-col">
               <label
                 htmlFor="nameEn"
@@ -119,7 +170,6 @@ export default function ProductDetails() {
                 value={nameEn}
                 onChange={(e) => setNameEn(e.target.value)}
                 className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Enter product name in English"
                 required
               />
             </div>
@@ -137,7 +187,6 @@ export default function ProductDetails() {
                 value={nameKh}
                 onChange={(e) => setNameKh(e.target.value)}
                 className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Enter product name in Khmer"
                 required
               />
             </div>
@@ -153,9 +202,10 @@ export default function ProductDetails() {
                 id="categoryId"
                 value={categoryId}
                 onChange={(e) => setCategoryId(Number(e.target.value))}
-                className="border rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                required
               >
-                <option value="">Select CategoryId</option>
+                <option value="">Select Category</option>
                 {category.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.nameEn}
@@ -177,16 +227,15 @@ export default function ProductDetails() {
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 className="border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="Enter SKU"
                 required
               />
             </div>
           </div>
 
-          <div className="col-span-2 space-x-4 mt-6">
+          <div className="space-x-4 mt-6">
             <button
               type="button"
-              className="py-2 px-6 bg-gray-300 text-gray-700 font-semibold rounded-md shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+              className="py-2 px-6 bg-gray-300 text-gray-700 font-semibold rounded-md shadow-md hover:bg-gray-400 focus:outline-none"
               onClick={handleCancel}
             >
               Cancel
@@ -194,7 +243,7 @@ export default function ProductDetails() {
 
             <button
               type="submit"
-              className={`py-2 px-6 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+              className={`py-2 px-6 bg-indigo-600 text-white font-semibold rounded-md shadow-md hover:bg-indigo-700 focus:outline-none ${
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={isLoading}
@@ -203,10 +252,11 @@ export default function ProductDetails() {
             </button>
 
             <button
-              type="submit"
-              className={`py-2 px-6 bg-rose-700 text-white font-semibold rounded-md shadow-md hover:bg-rose-800 focus:outline-none focus:ring-2 focus:bg-rose-700 focus:ring-offset-2 ${
+              type="button"
+              className={`py-2 px-6 bg-rose-700 text-white font-semibold rounded-md shadow-md hover:bg-rose-800 focus:outline-none ${
                 isLoading ? "opacity-50 cursor-not-allowed" : ""
               }`}
+              onClick={handleDelete}
               disabled={isLoading}
             >
               {isLoading ? "Deleting..." : "Delete"}
