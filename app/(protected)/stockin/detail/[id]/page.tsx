@@ -85,12 +85,12 @@ export default function AddPurchasePage() {
 
 
   useEffect(() => {
-    // fetch("/api/supplier", { credentials: "same-origin" })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     const suppliers = data.data as SupplierModel[];
-    //     setSuppliers(suppliers);
-    //   });
+    fetch("/api/supplier", { credentials: "same-origin" })
+      .then((res) => res.json())
+      .then((data) => {
+        const suppliers = data.data as SupplierModel[];
+        setSuppliers(suppliers);
+      });
 
     fetch("/api/product", { credentials: "same-origin" })
       .then((res) => res.json())
@@ -296,16 +296,22 @@ export default function AddPurchasePage() {
               <div className="space-y-2">
                 <Label>Supplier</Label>
                 <Select
-                  value={supplierId}
+                  defaultValue={supplierId}
                   onValueChange={(value) => setSupplierId(value)}
                 >
                   <SelectTrigger className="bg-white">
                     <SelectValue placeholder="Select supplier" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem key={supplierId} value={supplierId}>
-                      {supplierName || "Unknown Supplier"}
-                    </SelectItem>
+                    {suppliers.length > 0 ? (
+                      suppliers.map((supplier) => (
+                        <SelectItem key={supplier.id} value={supplier.id.toString()}>
+                          {supplier.supplierName}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="none">No suppliers available</SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
