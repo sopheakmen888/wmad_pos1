@@ -81,9 +81,6 @@ export default function AddPurchasePage() {
 
   // Add Purchase Item Modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-
   useEffect(() => {
     fetch("/api/supplier", { credentials: "same-origin" })
       .then((res) => res.json())
