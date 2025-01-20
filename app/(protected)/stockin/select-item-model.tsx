@@ -76,7 +76,6 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
           <TableHeader>
             <TableRow>
             <TableHead>Id</TableHead>
-              <TableHead>Supplier Name</TableHead>
               <TableHead>Reference Number</TableHead>
               <TableHead>Stock In Date</TableHead>
               <TableHead>Supplier Name</TableHead>
@@ -92,7 +91,6 @@ export const PageTableView: React.FC<Props> = ({ title, data }) => {
       className="cursor-pointer hover:bg-gray-100"
       onClick={() => router.push(`/stockin/detail/${item.id}`)}    >
         <TableCell>{item.id}</TableCell>
-      <TableCell>{item.supplierName}</TableCell>
       <TableCell>{item.referenceNumber}</TableCell>
       <TableCell>{new Date(item.stockInDate).toLocaleDateString()}</TableCell>
       <TableCell>{item.supplierName}</TableCell>
