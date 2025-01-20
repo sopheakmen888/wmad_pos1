@@ -11,6 +11,7 @@ const protectedRoutes = [
   "/upload",
   "/promotion",
   "/promotion/create",
+  "/promotion/info",
   "/user",
   "/supplier",
   "/supplier/info",
